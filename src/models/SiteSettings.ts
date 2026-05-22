@@ -1,4 +1,5 @@
 import { Schema, model, models, type Model, type HydratedDocument } from "mongoose";
+import { EMAIL_REGEX, URL_REGEX } from "@/lib/regex";
 
 export interface ISocialLinks {
   github?: string;
@@ -26,9 +27,6 @@ export interface ISiteSettings {
 }
 
 export type SiteSettingsDoc = HydratedDocument<ISiteSettings>;
-
-const URL_REGEX = /^https?:\/\//i;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const SocialSchema = new Schema<ISocialLinks>(
   {

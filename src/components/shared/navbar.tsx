@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {

@@ -18,15 +18,20 @@ export async function GET() {
 
 export const PATCH = withAuth(async (req: NextRequest, { session }) =>
   handle(async () => {
-    const parsed = await parseBody(req, settingsSchema);
-    if ("error" in parsed) return parsed.error;
+    const data = await parseBody(req, settingsSchema);
     await connectDB();
     const doc = await SiteSettings.findOneAndUpdate(
       { key: "default" },
-      { $set: parsed.data, $setOnInsert: { key: "default" } },
+      { $set: data, $setOnInsert: { key: "default" } },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
-    await audit({ actorId: session.sub, actorEmail: session.email, action: "update", entity: "SiteSettings", diff: parsed.data });
+    void audit({
+      actorId: session.sub,
+      actorEmail: session.email,
+      action: "update",
+      entity: "SiteSettings",
+      diff: data,
+    });
     return ok(doc.toObject());
   })
 );

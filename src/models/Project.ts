@@ -1,4 +1,5 @@
 import { Schema, model, models, type Model, type HydratedDocument, type Types } from "mongoose";
+import { SLUG_REGEX, URL_REGEX } from "@/lib/regex";
 
 export type ProjectStatus = "draft" | "published";
 
@@ -32,9 +33,6 @@ export interface IProject {
 }
 
 export type ProjectDoc = HydratedDocument<IProject>;
-
-const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const URL_REGEX = /^https?:\/\//i;
 
 const MetricsSchema = new Schema<IProjectMetrics>(
   {
@@ -81,6 +79,8 @@ const ProjectSchema = new Schema<IProject>(
 // Compound indexes for common query paths
 ProjectSchema.index({ status: 1, featured: -1, order: 1, year: -1 });
 ProjectSchema.index({ tech: 1, status: 1 });
+// Admin list has no status filter — sort-only index keeps it from collection-scanning.
+ProjectSchema.index({ featured: -1, order: 1, year: -1 });
 
 // Auto-set publishedAt when status flips to "published"
 ProjectSchema.pre("save", function (next) {

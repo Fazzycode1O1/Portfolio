@@ -68,6 +68,7 @@ export async function GET() {
       languages,
     });
   } catch (e) {
-    return serverError(e instanceof Error ? e.message : "GitHub fetch failed");
+    console.error("[github/stats]", e);
+    return serverError("GitHub fetch failed");
   }
 }

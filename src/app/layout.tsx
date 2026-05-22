@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@alif",
+    creator: "@MuhammadFaizanAli",
   },
   icons: { icon: "/favicon.ico" },
   robots: { index: true, follow: true },

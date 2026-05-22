@@ -1,4 +1,5 @@
 import { Schema, model, models, type Model, type HydratedDocument } from "mongoose";
+import { EMAIL_REGEX } from "@/lib/regex";
 
 export type MessageStatus = "new" | "read" | "archived";
 
@@ -16,8 +17,6 @@ export interface IContactMessage {
 }
 
 export type ContactMessageDoc = HydratedDocument<IContactMessage>;
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ContactMessageSchema = new Schema<IContactMessage>(
   {

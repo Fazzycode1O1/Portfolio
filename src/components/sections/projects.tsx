@@ -13,7 +13,7 @@ import { Tilt } from "@/components/motion/tilt";
 
 const FILTERS = ["All", "AI", "Full-Stack", "Frontend", "Data", "OSS"];
 
-export function ProjectCard({ project, featured }: { project: (typeof projects)[number]; featured?: boolean }) {
+function ProjectCardBase({ project, featured }: { project: (typeof projects)[number]; featured?: boolean }) {
   return (
     <motion.div
       whileInView={{ opacity: 1, y: 0 }}
@@ -83,6 +83,9 @@ export function ProjectCard({ project, featured }: { project: (typeof projects)[
     </motion.div>
   );
 }
+
+export const ProjectCard = React.memo(ProjectCardBase);
+ProjectCard.displayName = "ProjectCard";
 
 export function Projects() {
   const [filter, setFilter] = React.useState("All");

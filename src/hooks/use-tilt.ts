@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
-import { useIsTouch } from "./use-mobile";
+import { useIsTouch } from "@/hooks/use-mobile";
 
 interface Options {
   /** Max rotation in degrees (default 6). */

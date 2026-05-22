@@ -1,21 +1,38 @@
-import type { Model } from "mongoose";
+import type { HydratedDocument, Model, UpdateQuery } from "mongoose";
 import type { NextRequest } from "next/server";
 import type { ZodSchema } from "zod";
 import { connectDB } from "@/lib/db";
 import { withAuth, getSession } from "@/lib/auth";
 import { audit } from "@/models/AuditLog";
-import { ok, created, notFound, parseBody, handle, badRequest } from "@/lib/api";
+import { ok, created, parseBody, handle, methodNotAllowed, NotFoundError } from "@/lib/api";
+import { getRouteParam } from "@/lib/api/params";
 
-interface Opts<TSchema, TPatch> {
-  model: Model<any>;
+/**
+ * Options for the generic CRUD factory.
+ *
+ * Generics:
+ *  - `TDoc`     — the document shape stored in MongoDB. Drives `Model<TDoc>`
+ *                 so callers get full type inference on `.find`, `.create`, etc.
+ *  - `TCreate`  — the validated body shape for POST.
+ *  - `TPatch`   — the validated body shape for PATCH.
+ */
+interface CrudOptions<TDoc, TCreate, TPatch> {
+  model: Model<TDoc>;
   entity: string;
-  createSchema: ZodSchema<TSchema>;
+  createSchema: ZodSchema<TCreate>;
   patchSchema: ZodSchema<TPatch>;
+  /** Filter applied for unauthenticated callers on the public list endpoint. */
   publicFilter?: Record<string, unknown>;
   defaultSort?: Record<string, 1 | -1>;
 }
 
-export function listHandler<S, P>({ model, publicFilter = {}, defaultSort = { order: 1, createdAt: -1 } }: Opts<S, P>) {
+const DEFAULT_SORT: Record<string, 1 | -1> = { order: 1, createdAt: -1 };
+
+export function listHandler<TDoc, TCreate, TPatch>({
+  model,
+  publicFilter = {},
+  defaultSort = DEFAULT_SORT,
+}: CrudOptions<TDoc, TCreate, TPatch>) {
   return async (_req: NextRequest) =>
     handle(async () => {
       await connectDB();
@@ -26,7 +43,10 @@ export function listHandler<S, P>({ model, publicFilter = {}, defaultSort = { or
     });
 }
 
-export function adminListHandler<S, P>({ model, defaultSort = { order: 1, createdAt: -1 } }: Opts<S, P>) {
+export function adminListHandler<TDoc, TCreate, TPatch>({
+  model,
+  defaultSort = DEFAULT_SORT,
+}: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async () =>
     handle(async () => {
       await connectDB();
@@ -36,58 +56,89 @@ export function adminListHandler<S, P>({ model, defaultSort = { order: 1, create
   );
 }
 
-export function createHandler<S, P>({ model, entity, createSchema }: Opts<S, P>) {
+export function createHandler<TDoc, TCreate, TPatch>({
+  model,
+  entity,
+  createSchema,
+}: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async (req, { session }) =>
     handle(async () => {
-      const parsed = await parseBody(req, createSchema);
-      if ("error" in parsed) return parsed.error;
+      const data = await parseBody(req, createSchema);
       await connectDB();
-      const doc = await model.create(parsed.data as Record<string, unknown>);
-      await audit({ actorId: session.sub, actorEmail: session.email, action: "create", entity, entityId: String(doc._id) });
+      const doc = await model.create(data);
+      void audit({
+        actorId: session.sub,
+        actorEmail: session.email,
+        action: "create",
+        entity,
+        entityId: String(doc._id),
+      });
       return created(doc.toObject());
     })
   );
 }
 
-export function getOneHandler<S, P>({ model }: Opts<S, P>) {
+export function getOneHandler<TDoc, TCreate, TPatch>({ model }: CrudOptions<TDoc, TCreate, TPatch>) {
   return async (_req: NextRequest, ctx: { params: Promise<{ id: string }> }) =>
     handle(async () => {
-      const { id } = await ctx.params;
+      const id = await getRouteParam(ctx.params, "id");
       await connectDB();
       const doc = await model.findById(id).lean();
-      if (!doc) return notFound();
+      if (!doc) throw NotFoundError();
       return ok(doc);
     });
 }
 
-export function patchHandler<S, P>({ model, entity, patchSchema }: Opts<S, P>) {
+export function patchHandler<TDoc, TCreate, TPatch>({
+  model,
+  entity,
+  patchSchema,
+}: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async (req, { session, params }) =>
     handle(async () => {
-      const { id } = (await params) as { id: string };
-      const parsed = await parseBody(req, patchSchema);
-      if ("error" in parsed) return parsed.error;
+      const id = await getRouteParam(params, "id");
+      const data = await parseBody(req, patchSchema);
       await connectDB();
-      const doc = await model.findByIdAndUpdate(id, parsed.data as Record<string, unknown>, { new: true });
-      if (!doc) return notFound();
-      await audit({ actorId: session.sub, actorEmail: session.email, action: "update", entity, entityId: id, diff: parsed.data });
+      // Zod has already validated `data`; Mongoose's UpdateQuery is structurally
+      // a superset of `TPatch` once we drop schema-shaped fields, so we narrow
+      // at this boundary rather than leak the cast into the rest of the file.
+      const doc = (await model.findByIdAndUpdate(id, data as UpdateQuery<TDoc>, { new: true })) as
+        | HydratedDocument<TDoc>
+        | null;
+      if (!doc) throw NotFoundError();
+      void audit({
+        actorId: session.sub,
+        actorEmail: session.email,
+        action: "update",
+        entity,
+        entityId: id,
+        diff: data,
+      });
       return ok(doc.toObject());
     })
   );
 }
 
-export function deleteHandler<S, P>({ model, entity }: Opts<S, P>) {
+export function deleteHandler<TDoc, TCreate, TPatch>({ model, entity }: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async (_req, { session, params }) =>
     handle(async () => {
-      const { id } = (await params) as { id: string };
+      const id = await getRouteParam(params, "id");
       await connectDB();
       const doc = await model.findByIdAndDelete(id);
-      if (!doc) return notFound();
-      await audit({ actorId: session.sub, actorEmail: session.email, action: "delete", entity, entityId: id });
+      if (!doc) throw NotFoundError();
+      void audit({
+        actorId: session.sub,
+        actorEmail: session.email,
+        action: "delete",
+        entity,
+        entityId: id,
+      });
       return ok({ success: true });
     })
   );
 }
 
-export function notAllowed() {
-  return badRequest("Method not allowed");
+/** 405 helper with proper `Allow` header. Pass the methods this route supports. */
+export function notAllowed(allowed: readonly string[] = ["GET"]) {
+  return methodNotAllowed(allowed);
 }

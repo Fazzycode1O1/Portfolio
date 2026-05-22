@@ -1,4 +1,4 @@
-type Bucket = { count: number; resetAt: number };
+interface Bucket { count: number; resetAt: number }
 const buckets = new Map<string, Bucket>();
 
 export interface RateLimitResult {
@@ -7,7 +7,26 @@ export interface RateLimitResult {
   resetAt: number;
 }
 
-export function rateLimit(key: string, { limit = 5, windowMs = 60_000 } = {}): RateLimitResult {
+export interface RateLimitPolicy {
+  /** Max requests per window. */
+  limit: number;
+  /** Window length in ms. */
+  windowMs: number;
+}
+
+/**
+ * Canonical policies. Routes reference these by name so tuning happens in one
+ * place. Add a new entry here when introducing a new abuse surface.
+ */
+export const RATE_POLICIES = {
+  login:   { limit: 5, windowMs: 15 * 60_000 },
+  contact: { limit: 3, windowMs: 60 * 60_000 },
+} as const satisfies Record<string, RateLimitPolicy>;
+
+export type RateLimitName = keyof typeof RATE_POLICIES;
+
+export function rateLimit(key: string, policy: RateLimitPolicy = { limit: 5, windowMs: 60_000 }): RateLimitResult {
+  const { limit, windowMs } = policy;
   const now = Date.now();
   const b = buckets.get(key);
   if (!b || b.resetAt < now) {

@@ -1,4 +1,5 @@
 import { Schema, model, models, type Model, type HydratedDocument } from "mongoose";
+import { EMAIL_REGEX, URL_REGEX } from "@/lib/regex";
 
 export type UserRole = "admin" | "owner";
 
@@ -16,8 +17,6 @@ export interface IUser {
 
 export type UserDoc = HydratedDocument<IUser>;
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const UserSchema = new Schema<IUser>(
   {
     name: { type: String, required: true, trim: true, minlength: 1, maxlength: 120 },
@@ -32,7 +31,7 @@ const UserSchema = new Schema<IUser>(
     },
     passwordHash: { type: String, required: true, select: false },
     role: { type: String, enum: ["admin", "owner"], default: "admin", index: true },
-    avatarUrl: { type: String, match: /^https?:\/\//i },
+    avatarUrl: { type: String, match: URL_REGEX },
     lastLoginAt: Date,
     refreshTokens: { type: [String], default: [], select: false },
   },

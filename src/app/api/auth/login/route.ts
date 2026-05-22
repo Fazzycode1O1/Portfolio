@@ -2,28 +2,27 @@ import type { NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/User";
-import { signToken, setAuthCookie } from "@/lib/auth";
+import { signToken, setAuthCookie, unauthorized } from "@/lib/auth";
 import { loginSchema } from "@/lib/validators";
-import { ok, parseBody, handle, badRequest, tooMany } from "@/lib/api";
-import { rateLimit, getIp } from "@/lib/rate-limit";
+import { ok, parseBody, handle, tooMany } from "@/lib/api";
+import { rateLimit, getIp, RATE_POLICIES } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   return handle(async () => {
     const ip = getIp(req);
-    const rl = rateLimit(`login:${ip}`, { limit: 5, windowMs: 15 * 60_000 });
+    const rl = rateLimit(`login:${ip}`, RATE_POLICIES.login);
     if (!rl.ok) return tooMany(rl.resetAt);
 
-    const parsed = await parseBody(req, loginSchema);
-    if ("error" in parsed) return parsed.error;
+    const { email, password } = await parseBody(req, loginSchema);
 
     await connectDB();
-    const user = await User.findOne({ email: parsed.data.email.toLowerCase() });
-    if (!user) return badRequest("Invalid credentials");
+    const user = await User.findOne({ email: email.toLowerCase() }).select("+passwordHash");
+    if (!user) return unauthorized("Invalid credentials");
 
-    const valid = await bcrypt.compare(parsed.data.password, user.passwordHash);
-    if (!valid) return badRequest("Invalid credentials");
+    const valid = await bcrypt.compare(password, user.passwordHash);
+    if (!valid) return unauthorized("Invalid credentials");
 
     const token = await signToken({ sub: String(user._id), email: user.email, role: user.role });
     await setAuthCookie(token);

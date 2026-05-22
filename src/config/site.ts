@@ -1,11 +1,11 @@
 export const siteConfig = {
-  name: "Alif",
-  title: "Alif — Software Engineer & AI Engineer",
+  name: "Muhammad Faizan Ali",
+  title: "Muhammad Faizan Ali — Software Engineer & AI Engineer",
   description:
     "Premium portfolio of a full-stack software engineer and AI enthusiast — building modern web products, intelligent systems, and developer tools.",
-  url: "https://alif.dev",
+  url: "https://muhammadfaizanali.dev",
   ogImage: "/og.png",
-  author: { name: "Alif", email: "alif61598@gmail.com", role: "Software Engineer · AI Engineer" },
+  author: { name: "Muhammad Faizan Ali", email: "alif61598@gmail.com", role: "Software Engineer · AI Engineer" },
   links: {
     github: "https://github.com/Fazzycode1O1",
     linkedin: "https://linkedin.com/in/alif",

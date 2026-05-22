@@ -1,4 +1,5 @@
 import { Schema, model, models, type Model, type HydratedDocument } from "mongoose";
+import { PERIOD_REGEX, URL_REGEX } from "@/lib/regex";
 
 export type ExperienceType = "work" | "education";
 
@@ -17,8 +18,6 @@ export interface IExperience {
 }
 
 export type ExperienceDoc = HydratedDocument<IExperience>;
-
-const PERIOD_REGEX = /^\d{4}(-\d{2})?$/;
 
 const ExperienceSchema = new Schema<IExperience>(
   {
@@ -40,7 +39,7 @@ const ExperienceSchema = new Schema<IExperience>(
       default: [],
       validate: (v: string[]) => v.length <= 12,
     },
-    logo: { type: String, match: /^https?:\/\//i },
+    logo: { type: String, match: URL_REGEX },
     order: { type: Number, default: 0 },
   },
   { timestamps: true }

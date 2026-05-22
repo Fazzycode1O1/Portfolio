@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
+import { AUTH_COOKIE } from "@/lib/constants";
 
-const COOKIE_NAME = "auth_token";
+const COOKIE_NAME = AUTH_COOKIE;
 
 async function isValid(token: string | undefined) {
   if (!token) return false;

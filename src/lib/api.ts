@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { ZodError, type ZodSchema } from "zod";
 
+/* ---------------------------------------------------------------- responses */
+
 export function ok<T>(data: T, init?: ResponseInit) {
   return NextResponse.json(data, init);
 }
@@ -17,6 +19,13 @@ export function notFound(message = "Not found") {
   return NextResponse.json({ error: message }, { status: 404 });
 }
 
+export function methodNotAllowed(allowed: readonly string[]) {
+  return NextResponse.json(
+    { error: "Method not allowed" },
+    { status: 405, headers: { Allow: allowed.join(", ") } }
+  );
+}
+
 export function serverError(message = "Internal server error") {
   return NextResponse.json({ error: message }, { status: 500 });
 }
@@ -28,20 +37,58 @@ export function tooMany(resetAt: number) {
   );
 }
 
-export async function parseBody<T>(req: Request, schema: ZodSchema<T>): Promise<{ data: T } | { error: Response }> {
-  try {
-    const json = await req.json();
-    const data = schema.parse(json);
-    return { data };
-  } catch (e) {
-    if (e instanceof ZodError) return { error: badRequest("Validation failed", e.flatten()) };
-    return { error: badRequest("Invalid JSON body") };
+/* ---------------------------------------------------------------- errors */
+
+/**
+ * Thrown by `parseBody` (and callable directly) so route handlers can stop
+ * juggling discriminated-union return shapes. `handle()` catches these and
+ * renders the appropriate response.
+ */
+export class ApiError extends Error {
+  readonly status: number;
+  readonly details?: unknown;
+  constructor(message: string, status = 400, details?: unknown) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.details = details;
   }
 }
 
+export const NotFoundError = (message = "Not found") => new ApiError(message, 404);
+export const ValidationError = (details?: unknown) => new ApiError("Validation failed", 400, details);
+
+/* ---------------------------------------------------------------- helpers */
+
+/**
+ * Parse + validate a JSON request body. Throws `ApiError(400)` on schema
+ * failure — let `handle()` render it.
+ */
+export async function parseBody<T>(req: Request, schema: ZodSchema<T>): Promise<T> {
+  let json: unknown;
+  try {
+    json = await req.json();
+  } catch {
+    throw new ApiError("Invalid JSON body", 400);
+  }
+  try {
+    return schema.parse(json);
+  } catch (e) {
+    if (e instanceof ZodError) throw ValidationError(e.flatten());
+    throw e;
+  }
+}
+
+/**
+ * Central error trap. Renders known `ApiError`s with their declared status;
+ * logs everything else and returns a generic 500 (no internal-message leak).
+ */
 export function handle(fn: () => Promise<Response>) {
   return fn().catch((e) => {
+    if (e instanceof ApiError) {
+      return NextResponse.json({ error: e.message, details: e.details }, { status: e.status });
+    }
     console.error("[api]", e);
-    return serverError(e instanceof Error ? e.message : "Unknown error");
+    return serverError();
   });
 }

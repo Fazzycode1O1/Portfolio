@@ -181,7 +181,7 @@ export const testimonials: Testimonial[] = [
     author: "Sarah Chen",
     role: "CTO",
     company: "Northbeam",
-    quote: "Alif rebuilt our data pipeline in two weeks. It now handles 20× the load on half the infra.",
+    quote: "Muhammad Faizan Ali rebuilt our data pipeline in two weeks. It now handles 20× the load on half the infra.",
     rating: 5,
   },
   {
@@ -195,7 +195,7 @@ export const testimonials: Testimonial[] = [
     author: "Priya Nair",
     role: "Founder",
     company: "Voxa",
-    quote: "Our AI features went from prototype to production thanks to Alif's RAG architecture.",
+    quote: "Our AI features went from prototype to production thanks to Muhammad Faizan Ali's RAG architecture.",
     rating: 5,
   },
 ];

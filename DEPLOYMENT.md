@@ -85,7 +85,7 @@ and `build` on every push and PR.
    | `BLOB_READ_WRITE_TOKEN` | optional, enables `/api/upload` to Vercel Blob |
    | `RESEND_API_KEY` | optional, enables outbound contact emails |
    | `CONTACT_TO_EMAIL` | where contact-form copies land |
-   | `NEXT_PUBLIC_SITE_URL` | your production URL (e.g. `https://alif.dev`) |
+   | `NEXT_PUBLIC_SITE_URL` | your production URL (e.g. `https://muhammadfaizanali.dev`) |
 
 5. **Deploy**. First build takes ~60–90s.
 
@@ -93,7 +93,7 @@ and `build` on every push and PR.
 
 ## 7 · Custom domain (optional)
 
-1. Vercel → **Project → Settings → Domains** → add `alif.dev`.
+1. Vercel → **Project → Settings → Domains** → add `muhammadfaizanali.dev`.
 2. Add the suggested DNS records at your registrar (A or CNAME).
 3. Update `NEXT_PUBLIC_SITE_URL` to the new domain and **Redeploy**.
 4. Update [`src/config/site.ts`](src/config/site.ts) `url` if you want absolute links / OG metadata to use the new domain.

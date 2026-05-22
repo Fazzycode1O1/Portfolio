@@ -1,9 +1,10 @@
 import { SignJWT, jwtVerify, type JWTPayload } from "jose";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
+import { AUTH_COOKIE, AUTH_TTL_SECONDS } from "@/lib/constants";
 
-const COOKIE_NAME = "auth_token";
-const ACCESS_TTL = 60 * 60 * 24 * 2; // 2 days
+const COOKIE_NAME = AUTH_COOKIE;
+const ACCESS_TTL = AUTH_TTL_SECONDS;
 
 function getSecret() {
   const s = process.env.JWT_SECRET;
@@ -80,4 +81,4 @@ export function withAuth(handler: Handler, role: "admin" | "owner" = "admin") {
   };
 }
 
-export const AUTH_COOKIE = COOKIE_NAME;
+export { AUTH_COOKIE } from "@/lib/constants";
