@@ -1,3 +1,14 @@
+/**
+ * WARNING — Best-effort only on serverless.
+ *
+ * This limiter holds state in a module-scoped Map, so it is per-lambda-instance.
+ * On Vercel/serverless, each cold start gets a fresh map and many instances
+ * run concurrently — distributed attacks bypass the limit trivially.
+ *
+ * Acceptable today because the protected surfaces (login, contact) are also
+ * gated by bcrypt cost and a honeypot. Replace with `@upstash/ratelimit` +
+ * Redis/KV before the surface area widens.
+ */
 interface Bucket { count: number; resetAt: number }
 const buckets = new Map<string, Bucket>();
 

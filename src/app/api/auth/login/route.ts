@@ -9,6 +9,13 @@ import { rateLimit, getIp, RATE_POLICIES } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
+/**
+ * Bcrypt of an unreachable password, used to keep response time constant when
+ * the email doesn't exist. Generated with `bcrypt.hashSync("", 10)` and frozen —
+ * never matches any real password.
+ */
+const DUMMY_HASH = "$2a$10$CwTycUXWue0Thq9StjUM0uJ8R6cN9pX5y6T5j7w8s8q1p2r3t4u5v";
+
 export async function POST(req: NextRequest) {
   return handle(async () => {
     const ip = getIp(req);
@@ -19,10 +26,12 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
     const user = await User.findOne({ email: email.toLowerCase() }).select("+passwordHash");
-    if (!user) return unauthorized("Invalid credentials");
 
-    const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid) return unauthorized("Invalid credentials");
+    // Always run bcrypt — comparing against a dummy hash when the user doesn't
+    // exist keeps timing roughly constant and prevents email enumeration.
+    const hash = user?.passwordHash ?? DUMMY_HASH;
+    const valid = await bcrypt.compare(password, hash);
+    if (!user || !valid) return unauthorized("Invalid credentials");
 
     const token = await signToken({ sub: String(user._id), email: user.email, role: user.role });
     await setAuthCookie(token);

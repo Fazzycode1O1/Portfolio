@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
-
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  // Don't throw at import time so the build can proceed without an env in CI.
-  // Throw at first connect() call instead.
-}
+import { serverEnv } from "@/lib/env";
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -22,8 +16,8 @@ if (!global._mongoose) global._mongoose = cached;
 
 export async function connectDB() {
   if (cached.conn) return cached.conn;
-  if (!MONGODB_URI) throw new Error("MONGODB_URI is not defined");
   if (!cached.promise) {
+    const { MONGODB_URI } = serverEnv();
     cached.promise = mongoose
       .connect(MONGODB_URI, {
         bufferCommands: false,

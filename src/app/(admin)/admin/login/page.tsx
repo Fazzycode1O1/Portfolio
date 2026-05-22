@@ -13,7 +13,11 @@ import { api } from "@/lib/api-client";
 export default function LoginPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const from = params.get("from") ?? "/admin";
+  // Validate `from` is a same-origin admin path. Reject protocol-relative URLs
+  // (//evil.com), absolute URLs, and anything outside /admin to prevent
+  // open-redirect after sign-in.
+  const fromRaw = params.get("from") ?? "/admin";
+  const from = /^\/admin(\/|$)/.test(fromRaw) && !fromRaw.startsWith("//") ? fromRaw : "/admin";
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");

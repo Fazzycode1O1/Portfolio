@@ -6,4 +6,9 @@
  */
 
 export const AUTH_COOKIE = "auth_token";
-export const AUTH_TTL_SECONDS = 60 * 60 * 24 * 2; // 2 days
+/** 12 hours — short enough to limit blast radius if a token leaks; long enough not to annoy. */
+export const AUTH_TTL_SECONDS = 60 * 60 * 12;
+
+/** JWT claim values. Verifying these stops tokens minted for other apps (with the same secret) from being accepted here. */
+export const JWT_ISSUER = "muhammadfaizanali.dev";
+export const JWT_AUDIENCE = "muhammadfaizanali.dev/admin";

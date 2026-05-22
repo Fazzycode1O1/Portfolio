@@ -60,11 +60,18 @@ export const ValidationError = (details?: unknown) => new ApiError("Validation f
 
 /* ---------------------------------------------------------------- helpers */
 
+/** Hard cap on JSON request bodies. Anything larger is almost certainly abuse. */
+const MAX_BODY_BYTES = 100 * 1024; // 100 KB
+
 /**
  * Parse + validate a JSON request body. Throws `ApiError(400)` on schema
- * failure — let `handle()` render it.
+ * failure and `ApiError(413)` on oversized payloads — let `handle()` render.
  */
 export async function parseBody<T>(req: Request, schema: ZodSchema<T>): Promise<T> {
+  const declared = Number(req.headers.get("content-length") ?? "0");
+  if (declared > MAX_BODY_BYTES) {
+    throw new ApiError("Payload too large", 413);
+  }
   let json: unknown;
   try {
     json = await req.json();

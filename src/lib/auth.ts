@@ -1,15 +1,14 @@
 import { SignJWT, jwtVerify, type JWTPayload } from "jose";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
-import { AUTH_COOKIE, AUTH_TTL_SECONDS } from "@/lib/constants";
+import { AUTH_COOKIE, AUTH_TTL_SECONDS, JWT_ISSUER, JWT_AUDIENCE } from "@/lib/constants";
+import { serverEnv, allowedOrigins } from "@/lib/env";
 
 const COOKIE_NAME = AUTH_COOKIE;
 const ACCESS_TTL = AUTH_TTL_SECONDS;
 
 function getSecret() {
-  const s = process.env.JWT_SECRET;
-  if (!s) throw new Error("JWT_SECRET is not defined");
-  return new TextEncoder().encode(s);
+  return new TextEncoder().encode(serverEnv().JWT_SECRET);
 }
 
 export interface AuthPayload extends JWTPayload {
@@ -18,17 +17,25 @@ export interface AuthPayload extends JWTPayload {
   role: "admin" | "owner";
 }
 
-export async function signToken(payload: Omit<AuthPayload, "iat" | "exp">) {
+export async function signToken(payload: Omit<AuthPayload, "iat" | "exp" | "iss" | "aud">) {
   return await new SignJWT(payload as JWTPayload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
+    .setIssuer(JWT_ISSUER)
+    .setAudience(JWT_AUDIENCE)
     .setExpirationTime(`${ACCESS_TTL}s`)
     .sign(getSecret());
 }
 
 export async function verifyToken(token: string): Promise<AuthPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, getSecret());
+    // jose enforces alg, exp, iss, and aud — rejecting tokens minted for a
+    // different service even if they share the secret.
+    const { payload } = await jwtVerify(token, getSecret(), {
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE,
+      algorithms: ["HS256"],
+    });
     return payload as AuthPayload;
   } catch {
     return null;
@@ -39,7 +46,7 @@ export async function setAuthCookie(token: string) {
   const store = await cookies();
   store.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: serverEnv().NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: ACCESS_TTL,
@@ -72,8 +79,34 @@ export function forbidden(message = "Forbidden") {
 
 type Handler = (req: NextRequest, ctx: { params: Promise<Record<string, string>>; session: AuthPayload }) => Promise<Response> | Response;
 
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
+
+/**
+ * Defense-in-depth CSRF check: for mutating methods, require the `Origin`
+ * header to match an allowlisted origin. Combined with SameSite=lax cookies
+ * this stops cross-origin requests from drive-by JS even if a subdomain XSS
+ * existed.
+ */
+function isOriginAllowed(req: NextRequest): boolean {
+  if (SAFE_METHODS.has(req.method)) return true;
+  const origin = req.headers.get("origin");
+  if (!origin) {
+    // Same-origin form posts may omit Origin in some browsers; fall back to Referer.
+    const referer = req.headers.get("referer");
+    if (!referer) return false;
+    try {
+      const refOrigin = new URL(referer).origin;
+      return allowedOrigins().includes(refOrigin);
+    } catch {
+      return false;
+    }
+  }
+  return allowedOrigins().includes(origin);
+}
+
 export function withAuth(handler: Handler, role: "admin" | "owner" = "admin") {
   return async (req: NextRequest, ctx: { params: Promise<Record<string, string>> }) => {
+    if (!isOriginAllowed(req)) return forbidden("Cross-origin request blocked");
     const session = await getSession();
     if (!session) return unauthorized();
     if (role === "owner" && session.role !== "owner") return forbidden();
