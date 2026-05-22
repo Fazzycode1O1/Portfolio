@@ -30,7 +30,6 @@ export const metadata: Metadata = {
     images: [siteConfig.ogImage],
     creator: "@MuhammadFaizanAli",
   },
-  icons: { icon: "/favicon.ico" },
   robots: { index: true, follow: true },
 };
 
