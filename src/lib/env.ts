@@ -26,6 +26,10 @@ const ServerEnvSchema = z.object({
   // Defaults to NEXT_PUBLIC_SITE_URL when unset.
   ALLOWED_ORIGINS: z.string().optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+
+  // Vercel sets these automatically on every deployment.
+  VERCEL_URL: z.string().optional(),
+  VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
 });
 
 export type ServerEnv = z.infer<typeof ServerEnvSchema>;
@@ -48,12 +52,19 @@ export function serverEnv(): ServerEnv {
   return cached;
 }
 
-/** Allowed origins for CSRF same-origin checks. */
+/** Allowed origins for CSRF same-origin checks. Normalized (no trailing slash). */
 export function allowedOrigins(): string[] {
   const env = serverEnv();
-  const list = (env.ALLOWED_ORIGINS ?? env.NEXT_PUBLIC_SITE_URL ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const raw: string[] = [];
+  if (env.ALLOWED_ORIGINS) raw.push(...env.ALLOWED_ORIGINS.split(","));
+  if (env.NEXT_PUBLIC_SITE_URL) raw.push(env.NEXT_PUBLIC_SITE_URL);
+  // VERCEL_URL is the deployment URL without protocol (e.g. "myapp-abc.vercel.app").
+  if (env.VERCEL_URL) raw.push(`https://${env.VERCEL_URL}`);
+  if (env.VERCEL_PROJECT_PRODUCTION_URL) raw.push(`https://${env.VERCEL_PROJECT_PRODUCTION_URL}`);
   if (env.NODE_ENV !== "production") {
-    list.push("http://localhost:3000", "http://127.0.0.1:3000");
+    raw.push("http://localhost:3000", "http://127.0.0.1:3000");
   }
-  return list;
+  return raw
+    .map((s) => s.trim().replace(/\/+$/, "").toLowerCase())
+    .filter(Boolean);
 }

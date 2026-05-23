@@ -4,6 +4,19 @@ import { NextResponse, type NextRequest } from "next/server";
 import { AUTH_COOKIE, AUTH_TTL_SECONDS, JWT_ISSUER, JWT_AUDIENCE } from "@/lib/constants";
 import { serverEnv, allowedOrigins } from "@/lib/env";
 
+function normalizeOrigin(o: string): string {
+  return o.trim().replace(/\/+$/, "").toLowerCase();
+}
+
+function isLocalhostOrigin(origin: string): boolean {
+  try {
+    const u = new URL(origin);
+    return u.hostname === "localhost" || u.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
 const COOKIE_NAME = AUTH_COOKIE;
 const ACCESS_TTL = AUTH_TTL_SECONDS;
 
@@ -89,19 +102,23 @@ const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
  */
 function isOriginAllowed(req: NextRequest): boolean {
   if (SAFE_METHODS.has(req.method)) return true;
-  const origin = req.headers.get("origin");
+  let origin = req.headers.get("origin");
   if (!origin) {
     // Same-origin form posts may omit Origin in some browsers; fall back to Referer.
     const referer = req.headers.get("referer");
     if (!referer) return false;
     try {
-      const refOrigin = new URL(referer).origin;
-      return allowedOrigins().includes(refOrigin);
+      origin = new URL(referer).origin;
     } catch {
       return false;
     }
   }
-  return allowedOrigins().includes(origin);
+  const normalized = normalizeOrigin(origin);
+  const list = allowedOrigins();
+  if (list.includes(normalized)) return true;
+  // In non-production, accept any localhost/127.0.0.1 port so dev on alt ports works.
+  if (serverEnv().NODE_ENV !== "production" && isLocalhostOrigin(normalized)) return true;
+  return false;
 }
 
 export function withAuth(handler: Handler, role: "admin" | "owner" = "admin") {

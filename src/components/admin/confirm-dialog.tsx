@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -32,7 +33,14 @@ export function ConfirmDialog({
             disabled={loading}
             onClick={async () => {
               setLoading(true);
-              try { await onConfirm(); onOpenChange(false); } finally { setLoading(false); }
+              try {
+                await onConfirm();
+                onOpenChange(false);
+              } catch (err) {
+                toast.error(err instanceof Error ? err.message : "Action failed");
+              } finally {
+                setLoading(false);
+              }
             }}
           >
             {loading ? "Working…" : confirmLabel}
