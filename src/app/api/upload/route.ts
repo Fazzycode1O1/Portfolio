@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { put } from "@vercel/blob";
 import { withAuth } from "@/lib/auth";
 import { ok, badRequest, handle, serverError } from "@/lib/api";
 
@@ -6,6 +7,13 @@ export const runtime = "nodejs";
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5MB
 const ALLOWED = new Set(["image/jpeg", "image/png", "image/webp", "image/avif", "application/pdf"]);
+const EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/avif": "avif",
+  "application/pdf": "pdf",
+};
 
 export const POST = withAuth(async (req: NextRequest) =>
   handle(async () => {
@@ -15,12 +23,17 @@ export const POST = withAuth(async (req: NextRequest) =>
     if (!(file instanceof File)) return badRequest("Missing file");
     if (file.size > MAX_BYTES) return badRequest("File too large (max 5MB)");
     if (!ALLOWED.has(file.type)) return badRequest("Unsupported file type");
-
-    // Vercel Blob integration would happen here.
-    // For now, return a placeholder URL — wire BLOB_READ_WRITE_TOKEN + @vercel/blob to enable.
     if (!process.env.BLOB_READ_WRITE_TOKEN) {
       return serverError("Upload provider not configured (set BLOB_READ_WRITE_TOKEN)");
     }
-    return ok({ url: `https://placeholder.example/${encodeURIComponent(file.name)}` });
+
+    const ext = EXT[file.type] ?? "bin";
+    // addRandomSuffix prevents collisions when two uploads share a filename.
+    const blob = await put(`uploads/${Date.now()}.${ext}`, file, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType: file.type,
+    });
+    return ok({ url: blob.url });
   })
 );
