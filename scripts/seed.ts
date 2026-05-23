@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
-import "dotenv/config";
+// Load .env.local explicitly — `dotenv/config` defaults to `.env`, and Next.js
+// only auto-loads .env.local inside its own runtime, not in tsx scripts.
+import { config as loadEnv } from "dotenv";
+loadEnv({ path: ".env.local" });
+loadEnv(); // also pick up plain .env if it exists, without overriding .env.local
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { connectDB } from "../src/lib/db";
