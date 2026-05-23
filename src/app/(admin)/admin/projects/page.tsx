@@ -59,7 +59,7 @@ export default function AdminProjects() {
 
       <div className="overflow-hidden rounded-2xl glass">
         <table className="w-full text-sm">
-          <thead className="border-b border-border bg-white/[0.02] text-left font-mono text-xs uppercase text-text-subtle">
+          <thead className="border-b border-border bg-black/[0.02] dark:bg-white/[0.02] text-left font-mono text-xs uppercase text-text-subtle">
             <tr>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3 hidden md:table-cell">Tech</th>
@@ -76,7 +76,7 @@ export default function AdminProjects() {
               <tr><td colSpan={5} className="px-4 py-8 text-center text-text-muted">No projects yet.</td></tr>
             )}
             {data?.map((p) => (
-              <tr key={p._id} className="transition-colors hover:bg-white/[0.02]">
+              <tr key={p._id} className="transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02]">
                 <td className="px-4 py-3">
                   <p className="font-medium text-text">{p.title}</p>
                   <p className="font-mono text-xs text-text-subtle">{p.slug}</p>
@@ -97,7 +97,7 @@ export default function AdminProjects() {
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-1">
                     {p.liveUrl && (
-                      <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="grid size-9 place-items-center rounded-lg text-text-muted hover:bg-white/[0.05] hover:text-text" aria-label="Open live">
+                      <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="grid size-9 place-items-center rounded-lg text-text-muted hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-text" aria-label="Open live">
                         <ExternalLink className="size-4" />
                       </a>
                     )}
@@ -240,7 +240,7 @@ function ProjectForm({
                     id="status"
                     value={form.status}
                     onChange={(e) => update("status", e.target.value as "draft" | "published")}
-                    className="h-12 w-full rounded-lg border border-border bg-white/[0.03] px-3 text-sm text-text focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
+                    className="h-12 w-full rounded-lg border border-border bg-black/[0.03] dark:bg-white/[0.03] px-3 text-sm text-text focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
                   >
                     <option value="draft">draft</option>
                     <option value="published">published</option>

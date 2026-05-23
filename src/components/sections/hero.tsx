@@ -6,8 +6,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, Download, Github, Linkedin, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
-import { Particles } from "@/components/motion/particles";
-import { GradientOrbs } from "@/components/motion/gradient-orbs";
 import { Magnetic } from "@/components/motion/magnetic";
 import { GradientText } from "@/components/motion/gradient-text";
 
@@ -48,12 +46,10 @@ export function Hero() {
 
   return (
     <section className="relative isolate flex min-h-[92vh] items-center overflow-hidden pt-24">
-      <GradientOrbs />
-      <Particles count={50} linkDistance={120} />
       <div aria-hidden className="noise -z-10" />
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,transparent_30%,#07070B_75%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(255,91,34,0.04),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(255,91,34,0.08),transparent_60%)]"
       />
 
       <div className="container-x">
@@ -149,7 +145,7 @@ export function Hero() {
       >
         <div className="flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-text-subtle">
           <span>Scroll</span>
-          <div className="relative h-10 w-px overflow-hidden bg-white/10">
+          <div className="relative h-10 w-px overflow-hidden bg-black/10 dark:bg-white/10">
             <motion.div
               className="absolute inset-x-0 top-0 h-4 bg-accent-gradient"
               animate={{ y: [-16, 40] }}

@@ -68,7 +68,7 @@ export default function AdminSkills() {
                       <p className="font-medium">{s.name}</p>
                       <div className="mt-1 flex gap-0.5">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <span key={i} className={`h-1 w-3 rounded-full ${i < s.proficiency ? "bg-accent-gradient" : "bg-white/10"}`} />
+                          <span key={i} className={`h-1 w-3 rounded-full ${i < s.proficiency ? "bg-accent-gradient" : "bg-black/10 dark:bg-white/10"}`} />
                         ))}
                       </div>
                     </div>
@@ -153,7 +153,7 @@ function SkillForm({
                 id="category"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value as Category })}
-                className="h-12 w-full rounded-lg border border-border bg-white/[0.03] px-3 text-sm focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
+                className="h-12 w-full rounded-lg border border-border bg-black/[0.03] dark:bg-white/[0.03] px-3 text-sm focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
               >
                 {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>

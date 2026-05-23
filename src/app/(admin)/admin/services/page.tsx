@@ -132,7 +132,7 @@ function ServiceForm({
                 id="icon"
                 value={form.icon}
                 onChange={(e) => setForm({ ...form, icon: e.target.value })}
-                className="h-12 w-full rounded-lg border border-border bg-white/[0.03] px-3 text-sm focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
+                className="h-12 w-full rounded-lg border border-border bg-black/[0.03] dark:bg-white/[0.03] px-3 text-sm focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
               >
                 {["layers", "sparkles", "compass"].map((i) => <option key={i} value={i}>{i}</option>)}
               </select>

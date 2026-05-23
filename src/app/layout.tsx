@@ -35,8 +35,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#07070B" },
-    { media: "(prefers-color-scheme: light)", color: "#FAFAFC" },
+    { media: "(prefers-color-scheme: light)", color: "#FAFAF7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0E0D0B" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -48,13 +48,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <JsonLd />
       </head>
-      <body className="font-sans antialiased bg-bg text-text selection:bg-accent-from/30">
+      <body className="font-sans antialiased bg-bg text-text">
         <Providers>
           {children}
           <Toaster
-            theme="dark"
             position="bottom-right"
-            toastOptions={{ className: "glass !border-border !text-text" }}
+            richColors
+            closeButton
+            toastOptions={{ className: "glass !border-border !text-text", duration: 4000 }}
           />
         </Providers>
       </body>

@@ -28,8 +28,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
             className={cn(
               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
               active
-                ? "bg-white/[0.06] text-text border border-border-strong"
-                : "border border-transparent text-text-muted hover:bg-white/[0.03] hover:text-text"
+                ? "bg-black/[0.06] dark:bg-white/[0.06] text-text border border-border-strong"
+                : "border border-transparent text-text-muted hover:bg-black/[0.03] dark:hover:bg-white/[0.03] hover:text-text"
             )}
           >
             <Icon className="size-4" /> {item.label}
@@ -58,7 +58,7 @@ export function AdminSidebar({ variant = "desktop", onClose }: SidebarProps) {
           <Brand />
           <button
             onClick={onClose}
-            className="grid size-8 place-items-center rounded-lg hover:bg-white/[0.05]"
+            className="grid size-8 place-items-center rounded-lg hover:bg-black/[0.05] dark:hover:bg-white/[0.05]"
             aria-label="Close menu"
           >
             <X className="size-4" />
@@ -68,7 +68,7 @@ export function AdminSidebar({ variant = "desktop", onClose }: SidebarProps) {
         <div className="border-t border-border p-3">
           <button
             onClick={logout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted hover:bg-white/[0.03] hover:text-text"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted hover:bg-black/[0.03] dark:hover:bg-white/[0.03] hover:text-text"
           >
             <LogOut className="size-4" /> Sign out
           </button>
@@ -86,7 +86,7 @@ export function AdminSidebar({ variant = "desktop", onClose }: SidebarProps) {
       <div className="border-t border-border p-3">
         <button
           onClick={logout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted hover:bg-white/[0.03] hover:text-text"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted hover:bg-black/[0.03] dark:hover:bg-white/[0.03] hover:text-text"
         >
           <LogOut className="size-4" /> Sign out
         </button>

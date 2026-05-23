@@ -26,7 +26,7 @@ const SAMPLE_MESSAGES = [
     email: "sarah@northbeam.io",
     subject: "Collaboration opportunity",
     message:
-      "Hi Alif, loved your work on Pulse Analytics — we're hiring a staff engineer and would love to chat. Are you open to a 30-min intro call next week?",
+      "Hi Muhammad Faizan Ali, loved your work on Pulse Analytics — we're hiring a staff engineer and would love to chat. Are you open to a 30-min intro call next week?",
     status: "new" as const,
   },
   {

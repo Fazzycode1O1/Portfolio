@@ -70,7 +70,7 @@ export function GitHubStats() {
             <div className="mb-4 font-mono text-xs uppercase text-text-muted">Top repositories</div>
             <ul className="space-y-3">
               {MOCK.topRepos.map((r) => (
-                <li key={r.name} className="flex items-center justify-between rounded-xl bg-white/[0.02] p-4 transition-all hover:bg-white/[0.04]">
+                <li key={r.name} className="flex items-center justify-between rounded-xl bg-black/[0.02] dark:bg-white/[0.02] p-4 transition-all hover:bg-black/[0.04] dark:hover:bg-white/[0.04]">
                   <div>
                     <p className="font-mono text-sm text-text">{r.name}</p>
                     <p className="text-xs text-text-muted">{r.desc}</p>
@@ -87,7 +87,7 @@ export function GitHubStats() {
 
             <div className="mt-6">
               <div className="mb-3 font-mono text-xs uppercase text-text-muted">Languages</div>
-              <div className="flex h-2 overflow-hidden rounded-full bg-white/5">
+              <div className="flex h-2 overflow-hidden rounded-full bg-black/5 dark:bg-white/5">
                 {MOCK.languages.map((l) => (
                   <div key={l.name} style={{ width: `${l.pct}%`, background: l.color }} />
                 ))}

@@ -69,7 +69,7 @@ export function Testimonials() {
                   key={k}
                   onClick={() => setI(k)}
                   aria-label={`Slide ${k + 1}`}
-                  className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-accent-gradient" : "w-1.5 bg-white/15"}`}
+                  className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-accent-gradient" : "w-1.5 bg-black/15 dark:bg-white/15"}`}
                 />
               ))}
             </div>

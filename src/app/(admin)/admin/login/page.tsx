@@ -81,7 +81,7 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-6 text-center font-mono text-xs text-text-subtle">
-          Seed an owner with <code className="rounded bg-white/[0.05] px-1 py-0.5">npm run seed</code>
+          Seed an owner with <code className="rounded bg-black/[0.05] dark:bg-white/[0.05] px-1 py-0.5">npm run seed</code>
         </p>
       </motion.div>
     </div>

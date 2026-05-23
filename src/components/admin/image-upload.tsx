@@ -60,7 +60,7 @@ export function ImageUpload({ value, onChange }: Props) {
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={loading}
-          className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-white/[0.02] text-text-muted transition-colors hover:border-border-strong hover:bg-white/[0.03] disabled:opacity-50"
+          className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-black/[0.02] dark:bg-white/[0.02] text-text-muted transition-colors hover:border-border-strong hover:bg-black/[0.03] dark:hover:bg-white/[0.03] disabled:opacity-50"
         >
           <Upload className="size-5" />
           <span className="text-sm">{loading ? "Uploading…" : "Click to upload"}</span>

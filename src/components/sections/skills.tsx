@@ -65,7 +65,7 @@ export function Skills() {
               whileHover={{ y: -4 }}
               className="group glass relative flex flex-col items-center gap-3 rounded-2xl p-5 text-center transition-all hover:border-border-strong"
             >
-              <div className="grid size-12 place-items-center rounded-xl bg-white/[0.04] text-base font-mono font-semibold text-gradient transition-all group-hover:shadow-glow-violet">
+              <div className="grid size-12 place-items-center rounded-xl bg-black/[0.04] dark:bg-white/[0.04] text-base font-mono font-semibold text-gradient transition-all group-hover:shadow-glow-violet">
                 {skill.name[0]}
               </div>
               <p className="text-sm font-medium text-text">{skill.name}</p>
@@ -75,7 +75,7 @@ export function Skills() {
                     key={i}
                     className={cn(
                       "h-1 w-3 rounded-full",
-                      i < skill.proficiency ? "bg-accent-gradient" : "bg-white/10"
+                      i < skill.proficiency ? "bg-accent-gradient" : "bg-black/10 dark:bg-white/10"
                     )}
                   />
                 ))}

@@ -11,13 +11,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-accent-gradient text-white shadow-glow-violet hover:-translate-y-0.5 hover:shadow-[0_0_60px_rgba(124,92,255,0.5)] active:translate-y-0",
+          "bg-accent text-white shadow-card hover:bg-accent-via hover:shadow-card-hover hover:-translate-y-px active:translate-y-0",
         secondary:
-          "glass text-text hover:border-border-strong hover:-translate-y-0.5",
+          "bg-surface text-text border border-border hover:border-border-strong hover:-translate-y-px",
         ghost:
-          "text-text-muted hover:text-text hover:bg-white/5",
+          "text-text-muted hover:text-text hover:bg-black/5 dark:hover:bg-white/5",
         outline:
-          "border border-border text-text hover:border-border-strong hover:bg-white/[0.03]",
+          "border border-border text-text hover:border-border-strong hover:bg-black/[0.03] dark:hover:bg-white/[0.03]",
         destructive:
           "border border-danger/40 text-danger hover:bg-danger/10",
       },

@@ -1,4 +1,4 @@
-# Alif — Premium Developer Portfolio
+# Faizan — Premium Developer Portfolio
 
 A modern, full-stack portfolio for a Software Engineer & AI Engineer.
 

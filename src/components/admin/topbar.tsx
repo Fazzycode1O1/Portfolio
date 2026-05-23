@@ -24,7 +24,7 @@ export function AdminTopbar({ onOpenMenu }: TopbarProps) {
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-subtle" />
           <input
             placeholder="Search…"
-            className="h-9 w-64 rounded-lg border border-border bg-white/[0.03] pl-9 pr-3 text-sm placeholder:text-text-subtle focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
+            className="h-9 w-64 rounded-lg border border-border bg-black/[0.03] dark:bg-white/[0.03] pl-9 pr-3 text-sm placeholder:text-text-subtle focus:border-accent-via focus:outline-none focus:ring-2 focus:ring-accent-via/30"
           />
         </div>
         <button className="grid size-9 place-items-center rounded-lg glass" aria-label="Notifications">

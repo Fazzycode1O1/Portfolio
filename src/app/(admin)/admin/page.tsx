@@ -10,7 +10,7 @@ import { PageHeader } from "@/components/admin/page-header";
 
 // Recharts is ~80KB gz. Defer it so the KPI grid paints first; chart slots
 // reserve space with skeletons so layout doesn't shift on hydration.
-const ChartSkeleton = () => <div className="h-64 animate-pulse rounded-lg bg-white/[0.03]" />;
+const ChartSkeleton = () => <div className="h-64 animate-pulse rounded-lg bg-black/[0.03] dark:bg-white/[0.03]" />;
 const MessagesAreaChart = dynamic(
   () => import("@/components/admin/analytics-charts").then((m) => m.MessagesAreaChart),
   { ssr: false, loading: ChartSkeleton }
@@ -67,7 +67,7 @@ export default function AdminOverview() {
                   <Icon className="size-4 text-gradient" />
                 </div>
                 <div className="mt-3 font-display text-3xl font-semibold tracking-tight">
-                  {isLoading ? <span className="inline-block h-7 w-12 animate-pulse rounded bg-white/[0.06]" /> : k.value}
+                  {isLoading ? <span className="inline-block h-7 w-12 animate-pulse rounded bg-black/[0.06] dark:bg-white/[0.06]" /> : k.value}
                 </div>
                 <div className="mt-1 text-xs text-text-subtle">{k.sub}</div>
               </Link>
