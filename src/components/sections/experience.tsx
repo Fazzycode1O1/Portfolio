@@ -4,10 +4,10 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { experience } from "@/lib/data";
+import type { ExperienceItem } from "@/types";
 import { cn } from "@/lib/utils";
 
-export function Experience() {
+export function Experience({ experience }: { experience: ExperienceItem[] }) {
   const [tab, setTab] = React.useState<"work" | "education">("work");
   const items = experience.filter((e) => e.type === tab);
 

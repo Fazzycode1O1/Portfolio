@@ -9,6 +9,12 @@ const opts = {
   entity: "Project",
   createSchema: projectSchema,
   patchSchema: projectPatchSchema,
+  revalidatePaths: [
+    "/",
+    "/projects",
+    { path: "/projects/[slug]", type: "page" as const },
+    "/sitemap.xml",
+  ],
 };
 
 export const GET = getOneHandler(opts);

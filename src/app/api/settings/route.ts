@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
 import { SiteSettings } from "@/models/SiteSettings";
 import { settingsSchema } from "@/lib/validators";
@@ -32,6 +33,7 @@ export const PATCH = withAuth(async (req: NextRequest, { session }) =>
       entity: "SiteSettings",
       diff: data,
     });
+    revalidatePath("/", "layout");
     return ok(doc.toObject());
   })
 );

@@ -11,6 +11,12 @@ const opts = {
   patchSchema: projectPatchSchema,
   publicFilter: { status: "published" as const },
   defaultSort: { featured: -1 as const, order: 1 as const, year: -1 as const },
+  revalidatePaths: [
+    "/",
+    "/projects",
+    { path: "/projects/[slug]", type: "page" as const },
+    "/sitemap.xml",
+  ],
 };
 
 export const GET = listHandler(opts);

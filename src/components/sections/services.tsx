@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import { Layers, Sparkles, Compass, Check } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { services } from "@/lib/data";
+import type { Service } from "@/types";
 
 const ICONS = { layers: Layers, sparkles: Sparkles, compass: Compass } as const;
 
-export function Services() {
+export function Services({ services }: { services: Service[] }) {
   return (
     <section id="services" className="relative py-24 md:py-32">
       <div className="container-x">

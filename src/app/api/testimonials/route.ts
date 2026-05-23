@@ -10,6 +10,7 @@ const opts = {
   createSchema: testimonialSchema,
   patchSchema: testimonialPatchSchema,
   publicFilter: { approved: true },
+  revalidatePaths: ["/"],
 };
 
 export const GET = listHandler(opts);

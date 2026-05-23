@@ -1,11 +1,27 @@
 import type { HydratedDocument, Model, UpdateQuery } from "mongoose";
 import type { NextRequest } from "next/server";
 import type { ZodSchema } from "zod";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
 import { withAuth, getSession } from "@/lib/auth";
 import { audit } from "@/models/AuditLog";
 import { ok, created, parseBody, handle, methodNotAllowed, NotFoundError } from "@/lib/api";
 import { getRouteParam } from "@/lib/api/params";
+
+/**
+ * Path entry to revalidate after a mutation. Pages with dynamic segments
+ * (e.g. "/projects/[slug]") require type:"page" so Next purges every
+ * generated variant, not just the literal string.
+ */
+type RevalidateEntry = string | { path: string; type: "page" | "layout" };
+
+function revalidate(entries: readonly RevalidateEntry[] | undefined) {
+  if (!entries) return;
+  for (const e of entries) {
+    if (typeof e === "string") revalidatePath(e);
+    else revalidatePath(e.path, e.type);
+  }
+}
 
 /**
  * Options for the generic CRUD factory.
@@ -24,6 +40,8 @@ interface CrudOptions<TDoc, TCreate, TPatch> {
   /** Filter applied for unauthenticated callers on the public list endpoint. */
   publicFilter?: Record<string, unknown>;
   defaultSort?: Record<string, 1 | -1>;
+  /** Paths to purge from Next's Data Cache after a successful mutation. */
+  revalidatePaths?: readonly RevalidateEntry[];
 }
 
 const DEFAULT_SORT: Record<string, 1 | -1> = { order: 1, createdAt: -1 };
@@ -60,6 +78,7 @@ export function createHandler<TDoc, TCreate, TPatch>({
   model,
   entity,
   createSchema,
+  revalidatePaths,
 }: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async (req, { session }) =>
     handle(async () => {
@@ -73,6 +92,7 @@ export function createHandler<TDoc, TCreate, TPatch>({
         entity,
         entityId: String(doc._id),
       });
+      revalidate(revalidatePaths);
       return created(doc.toObject());
     })
   );
@@ -93,6 +113,7 @@ export function patchHandler<TDoc, TCreate, TPatch>({
   model,
   entity,
   patchSchema,
+  revalidatePaths,
 }: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async (req, { session, params }) =>
     handle(async () => {
@@ -114,12 +135,13 @@ export function patchHandler<TDoc, TCreate, TPatch>({
         entityId: id,
         diff: data,
       });
+      revalidate(revalidatePaths);
       return ok(doc.toObject());
     })
   );
 }
 
-export function deleteHandler<TDoc, TCreate, TPatch>({ model, entity }: CrudOptions<TDoc, TCreate, TPatch>) {
+export function deleteHandler<TDoc, TCreate, TPatch>({ model, entity, revalidatePaths }: CrudOptions<TDoc, TCreate, TPatch>) {
   return withAuth(async (_req, { session, params }) =>
     handle(async () => {
       const id = await getRouteParam(params, "id");
@@ -133,6 +155,7 @@ export function deleteHandler<TDoc, TCreate, TPatch>({ model, entity }: CrudOpti
         entity,
         entityId: id,
       });
+      revalidate(revalidatePaths);
       return ok({ success: true });
     })
   );

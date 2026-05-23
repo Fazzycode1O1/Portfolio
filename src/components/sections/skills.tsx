@@ -3,9 +3,8 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { skills } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import type { SkillCategory } from "@/types";
+import type { Skill, SkillCategory } from "@/types";
 import { Marquee } from "@/components/motion/marquee";
 
 const CATEGORIES: { key: SkillCategory | "all"; label: string }[] = [
@@ -20,7 +19,7 @@ const CATEGORIES: { key: SkillCategory | "all"; label: string }[] = [
 
 const MARQUEE = ["Next.js", "TypeScript", "Python", "OpenAI", "MongoDB", "Tailwind", "Docker", "AWS", "PyTorch", "Vercel", "LangChain", "Redis"];
 
-export function Skills() {
+export function Skills({ skills }: { skills: Skill[] }) {
   const [active, setActive] = React.useState<SkillCategory | "all">("all");
   const filtered = active === "all" ? skills : skills.filter((s) => s.category === active);
 

@@ -7,13 +7,13 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
-import { projects } from "@/lib/data";
+import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 import { Tilt } from "@/components/motion/tilt";
 
 const FILTERS = ["All", "AI", "Full-Stack", "Frontend", "Data", "OSS"];
 
-function ProjectCardBase({ project, featured }: { project: (typeof projects)[number]; featured?: boolean }) {
+function ProjectCardBase({ project, featured }: { project: Project; featured?: boolean }) {
   return (
     <motion.div
       whileInView={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ function ProjectCardBase({ project, featured }: { project: (typeof projects)[num
 export const ProjectCard = React.memo(ProjectCardBase);
 ProjectCard.displayName = "ProjectCard";
 
-export function Projects() {
+export function Projects({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = React.useState("All");
   const filtered = filter === "All" ? projects : projects.filter((p) => p.categories.includes(filter));
 

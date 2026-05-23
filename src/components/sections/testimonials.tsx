@@ -4,18 +4,23 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { testimonials } from "@/lib/data";
+import type { Testimonial } from "@/types";
 
-export function Testimonials() {
+export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   const [i, setI] = React.useState(0);
-  const next = () => setI((p) => (p + 1) % testimonials.length);
+  const next = React.useCallback(
+    () => setI((p) => (p + 1) % testimonials.length),
+    [testimonials.length]
+  );
   const prev = () => setI((p) => (p - 1 + testimonials.length) % testimonials.length);
 
   React.useEffect(() => {
-    const t = setInterval(next, 6000);
-    return () => clearInterval(t);
-  }, []);
+    if (testimonials.length < 2) return;
+    const id = setInterval(next, 6000);
+    return () => clearInterval(id);
+  }, [next, testimonials.length]);
 
+  if (testimonials.length === 0) return null;
   const t = testimonials[i];
 
   return (

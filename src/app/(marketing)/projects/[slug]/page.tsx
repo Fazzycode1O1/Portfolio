@@ -3,17 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
-import { projects } from "@/lib/data";
+import { getAllProjectSlugs, getProjectBySlug } from "@/lib/content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const slugs = await getAllProjectSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const p = projects.find((x) => x.slug === slug);
+  const p = await getProjectBySlug(slug);
   if (!p) return {};
   return {
     title: p.title,
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
   return (
@@ -63,22 +64,6 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           <section>
             <h2 className="mb-3 font-display text-2xl font-semibold text-text">Overview</h2>
             <p>{project.description}</p>
-          </section>
-          <section>
-            <h2 className="mb-3 font-display text-2xl font-semibold text-text">Problem</h2>
-            <p>The original workflow was slow, manual, and didn&apos;t scale past a few hundred users. Existing tooling forced trade-offs between flexibility and performance.</p>
-          </section>
-          <section>
-            <h2 className="mb-3 font-display text-2xl font-semibold text-text">Solution</h2>
-            <p>I designed a modular architecture with a streaming data layer, an embedding-aware cache, and a clean UI that surfaces the right action at the right moment.</p>
-          </section>
-          <section>
-            <h2 className="mb-3 font-display text-2xl font-semibold text-text">Impact</h2>
-            <ul className="space-y-2">
-              <li className="flex gap-2"><span className="text-gradient">→</span> 10× throughput on the same infrastructure</li>
-              <li className="flex gap-2"><span className="text-gradient">→</span> p95 latency from 1.2s → 180ms</li>
-              <li className="flex gap-2"><span className="text-gradient">→</span> Adopted by 5k+ engineers in the first quarter</li>
-            </ul>
           </section>
         </div>
 

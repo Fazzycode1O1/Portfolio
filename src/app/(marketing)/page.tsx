@@ -7,18 +7,33 @@ import { Services } from "@/components/sections/services";
 import { GitHubStats } from "@/components/sections/github-stats";
 import { Testimonials } from "@/components/sections/testimonials";
 import { Contact } from "@/components/sections/contact";
+import {
+  getSkills,
+  getProjects,
+  getExperience,
+  getServices,
+  getTestimonials,
+} from "@/lib/content";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [skills, projects, experience, services, testimonials] = await Promise.all([
+    getSkills(),
+    getProjects(),
+    getExperience(),
+    getServices(),
+    getTestimonials(),
+  ]);
+
   return (
     <>
       <Hero />
       <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Services />
+      <Skills skills={skills} />
+      <Projects projects={projects} />
+      <Experience experience={experience} />
+      <Services services={services} />
       <GitHubStats />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
       <Contact />
     </>
   );

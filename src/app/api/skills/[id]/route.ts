@@ -4,7 +4,13 @@ import { getOneHandler, patchHandler, deleteHandler } from "@/lib/crud";
 
 export const runtime = "nodejs";
 
-const opts = { model: Skill, entity: "Skill", createSchema: skillSchema, patchSchema: skillPatchSchema };
+const opts = {
+  model: Skill,
+  entity: "Skill",
+  createSchema: skillSchema,
+  patchSchema: skillPatchSchema,
+  revalidatePaths: ["/", "/about"],
+};
 
 export const GET = getOneHandler(opts);
 export const PATCH = patchHandler(opts);
