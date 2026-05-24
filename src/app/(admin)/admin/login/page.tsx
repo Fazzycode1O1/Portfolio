@@ -53,7 +53,7 @@ export default function LoginPage() {
         className="w-full max-w-md glass rounded-2xl p-8"
       >
         <div className="mb-8">
-          <div className="mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-accent-gradient shadow-glow-violet">
+          <div className="mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-accent-gradient shadow-elev-2">
             <Lock className="size-5 text-white" />
           </div>
           <h1 className="font-display text-2xl font-semibold">Admin sign in</h1>

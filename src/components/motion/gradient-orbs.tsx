@@ -12,9 +12,9 @@ interface Orb {
 }
 
 const DEFAULT: Orb[] = [
-  { color: "rgba(124,92,255,0.35)", size: 520, x: "10%", y: "20%" },
-  { color: "rgba(79,139,255,0.30)", size: 420, x: "78%", y: "12%", delay: 2 },
-  { color: "rgba(79,224,255,0.25)", size: 460, x: "55%", y: "78%", delay: 4 },
+  { color: "rgba(143,169,189,0.32)", size: 520, x: "10%", y: "20%" },
+  { color: "rgba(107,143,168,0.28)", size: 420, x: "78%", y: "12%", delay: 2 },
+  { color: "rgba(184,149,111,0.22)", size: 460, x: "55%", y: "78%", delay: 4 },
 ];
 
 /**

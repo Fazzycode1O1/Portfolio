@@ -7,9 +7,9 @@ import { Mail, MapPin, Send, Check } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { Input, Textarea, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -20,6 +20,27 @@ const schema = z.object({
 
 type Form = z.infer<typeof schema>;
 type Errors = Partial<Record<keyof Form, string>>;
+
+/* ───────────────────── Hairline form primitives ─────────────────────────
+   Apple-style minimal inputs: no card chrome, only a hairline bottom border
+   that thickens + tints on focus. Defined locally so the shared Input
+   (still used by admin dialogs) keeps its boxed look. */
+
+const HAIRLINE_FIELD = cn(
+  "block w-full bg-transparent text-base text-text placeholder:text-text-subtle",
+  "border-0 border-b border-border px-0 py-3.5",
+  "transition-[border-color,box-shadow] duration-base ease-out-quart",
+  "focus:border-[color:var(--accent)] focus:outline-none focus:ring-0",
+  "focus:shadow-[0_1px_0_0_var(--accent)]"
+);
+
+function FieldLabel({ children, htmlFor }: { children: React.ReactNode; htmlFor: string }) {
+  return (
+    <label htmlFor={htmlFor} className="eyebrow block">
+      {children}
+    </label>
+  );
+}
 
 export function Contact() {
   const [form, setForm] = React.useState<Form>({ name: "", email: "", subject: "", message: "" });
@@ -36,7 +57,9 @@ export function Contact() {
     const result = schema.safeParse(form);
     if (!result.success) {
       const errs: Errors = {};
-      result.error.issues.forEach((i) => { errs[i.path[0] as keyof Form] = i.message; });
+      result.error.issues.forEach((i) => {
+        errs[i.path[0] as keyof Form] = i.message;
+      });
       setErrors(errs);
       return;
     }
@@ -54,35 +77,57 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="relative py-24 md:py-32">
-      <div className="container-x">
+    <section
+      id="contact"
+      className="relative isolate overflow-hidden py-32 md:py-44"
+    >
+      <div aria-hidden className="section-wash section-wash-blue" />
+      <span
+        aria-hidden
+        className="numeral-stencil absolute -bottom-16 right-6 md:-bottom-24 md:right-12"
+      >
+        08
+      </span>
+
+      <div className="container-x relative">
         <SectionHeading
-          eyebrow="Contact"
+          eyebrow="Contact · ~24h response"
           title="Let's build something."
           description="Have a project in mind, a role to fill, or just want to say hi? Drop a line below."
         />
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
-          <div className="space-y-6">
-            <div className="glass rounded-2xl p-6">
-              <p className="mb-4 font-mono text-xs uppercase tracking-wider text-text-muted">Direct</p>
-              <Link href={siteConfig.links.email} className="flex items-center gap-3 text-text hover:text-gradient">
-                <Mail className="size-4" />
-                <span className="text-sm">{siteConfig.author.email}</span>
-              </Link>
-              <div className="mt-3 flex items-center gap-3 text-text-muted">
-                <MapPin className="size-4" />
-                <span className="text-sm">Remote · Worldwide</span>
-              </div>
-            </div>
-            <div className="glass rounded-2xl p-6">
-              <p className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">Currently</p>
-              <p className="text-sm text-text">
-                Open to <span className="text-gradient">full-time roles</span>, freelance, and AI consulting engagements.
-              </p>
-            </div>
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+          {/* Side info — bare hairline-divided list, not cards. */}
+          <div>
+            <ul>
+              <li className="border-t border-border py-6">
+                <p className="eyebrow">Direct</p>
+                <Link
+                  href={siteConfig.links.email}
+                  className="mt-3 inline-flex items-center gap-3 text-text transition-colors duration-fast ease-out-quart hover:text-gradient"
+                >
+                  <Mail className="size-4" />
+                  <span>{siteConfig.author.email}</span>
+                </Link>
+              </li>
+              <li className="border-t border-border py-6">
+                <p className="eyebrow">Based</p>
+                <p className="mt-3 inline-flex items-center gap-3 text-text-muted">
+                  <MapPin className="size-4" />
+                  Remote · Worldwide
+                </p>
+              </li>
+              <li className="border-t border-b border-border py-6">
+                <p className="eyebrow">Currently</p>
+                <p className="mt-3 text-text body-pretty">
+                  Open to <span className="text-gradient">full-time roles</span>, freelance, and AI
+                  consulting engagements.
+                </p>
+              </li>
+            </ul>
           </div>
 
+          {/* Form */}
           <div className="relative">
             <AnimatePresence mode="wait">
               {sent ? (
@@ -91,13 +136,13 @@ export function Contact() {
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="glass rounded-2xl p-12 text-center"
+                  className="card-surface rounded-sm p-12 text-center"
                 >
-                  <div className="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-accent-gradient shadow-glow-violet">
+                  <div className="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-accent-gradient shadow-glow-blue">
                     <Check className="size-6 text-white" />
                   </div>
                   <h3 className="font-display text-2xl font-semibold">Message sent</h3>
-                  <p className="mt-2 text-text-muted">I'll get back to you within 48 hours.</p>
+                  <p className="mt-2 text-text-muted">I&apos;ll get back to you within 24 hours.</p>
                 </motion.div>
               ) : (
                 <motion.form
@@ -106,34 +151,80 @@ export function Contact() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={onSubmit}
-                  className="glass rounded-2xl p-6 md:p-8 space-y-5"
+                  className="space-y-7"
                 >
-                  <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
-                  <div className="grid gap-5 md:grid-cols-2">
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                    aria-hidden
+                  />
+                  <div className="grid gap-7 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Your name" />
+                      <FieldLabel htmlFor="name">Name</FieldLabel>
+                      <input
+                        id="name"
+                        type="text"
+                        value={form.name}
+                        onChange={(e) => update("name", e.target.value)}
+                        placeholder="Your name"
+                        className={HAIRLINE_FIELD}
+                      />
                       {errors.name && <p className="text-xs text-danger">{errors.name}</p>}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="you@company.com" />
+                      <FieldLabel htmlFor="email">Email</FieldLabel>
+                      <input
+                        id="email"
+                        type="email"
+                        value={form.email}
+                        onChange={(e) => update("email", e.target.value)}
+                        placeholder="you@company.com"
+                        className={HAIRLINE_FIELD}
+                      />
                       {errors.email && <p className="text-xs text-danger">{errors.email}</p>}
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" value={form.subject} onChange={(e) => update("subject", e.target.value)} placeholder="What's this about?" />
+                    <FieldLabel htmlFor="subject">Subject</FieldLabel>
+                    <input
+                      id="subject"
+                      type="text"
+                      value={form.subject}
+                      onChange={(e) => update("subject", e.target.value)}
+                      placeholder="What's this about?"
+                      className={HAIRLINE_FIELD}
+                    />
                     {errors.subject && <p className="text-xs text-danger">{errors.subject}</p>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Tell me about your project, role, or idea…" rows={6} />
+                    <FieldLabel htmlFor="message">Message</FieldLabel>
+                    <textarea
+                      id="message"
+                      value={form.message}
+                      onChange={(e) => update("message", e.target.value)}
+                      placeholder="Tell me about your project, role, or idea…"
+                      rows={5}
+                      className={cn(HAIRLINE_FIELD, "resize-y")}
+                    />
                     {errors.message && <p className="text-xs text-danger">{errors.message}</p>}
                   </div>
-                  <Button type="submit" size="lg" className="w-full md:w-auto" disabled={loading}>
-                    {loading ? "Sending…" : (<>Send message <Send /></>)}
-                  </Button>
+                  <div className="flex items-center justify-between gap-4 pt-2">
+                    <p className="font-mono text-xs text-text-subtle">
+                      I never share your email. Promise.
+                    </p>
+                    <Button type="submit" size="lg" disabled={loading}>
+                      {loading ? (
+                        "Sending…"
+                      ) : (
+                        <>
+                          Send message <Send />
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </motion.form>
               )}
             </AnimatePresence>

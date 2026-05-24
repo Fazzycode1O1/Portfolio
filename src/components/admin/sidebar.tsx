@@ -42,8 +42,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
 
 function Brand() {
   return (
-    <Link href="/" className="font-display text-base font-semibold">
-      Muhammad Faizan Ali<span className="text-gradient">.dev</span>
+    <Link href="/" className="font-display text-base font-semibold uppercase tracking-[0.18em]">
+      Muhammad Faizan Ali
     </Link>
   );
 }

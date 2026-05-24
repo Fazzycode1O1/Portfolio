@@ -6,14 +6,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 ease-out-quart focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-via focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0",
+  // active:scale-[0.97] is the press micro-interaction — pairs with -translate-y-px
+  // on hover variants so the gesture reads as lift → press → release.
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-base ease-out-quart focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-40 active:scale-[0.97] active:duration-fast motion-reduce:active:scale-100 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         primary:
-          "bg-accent text-white shadow-card hover:bg-accent-via hover:shadow-card-hover hover:-translate-y-px active:translate-y-0",
+          "bg-accent text-white shadow-elev-1 hover:bg-accent-via hover:shadow-elev-2 hover:-translate-y-px",
         secondary:
-          "bg-surface text-text border border-border hover:border-border-strong hover:-translate-y-px",
+          "bg-surface text-text border border-border hover:border-border-strong hover:-translate-y-px hover:shadow-elev-1",
         ghost:
           "text-text-muted hover:text-text hover:bg-black/5 dark:hover:bg-white/5",
         outline:

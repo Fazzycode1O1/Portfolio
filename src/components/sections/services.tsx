@@ -4,46 +4,75 @@ import { motion } from "framer-motion";
 import { Layers, Sparkles, Compass, Check } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import type { Service } from "@/types";
+import { EASE_OUT_EXPO, EASE_OUT_QUART, DUR_SLOW } from "@/lib/motion";
 
 const ICONS = { layers: Layers, sparkles: Sparkles, compass: Compass } as const;
+const SCOPES = ["4–8 wk engagement", "6–12 wk engagement", "≈ 2 wk per audit"] as const;
 
 export function Services({ services }: { services: Service[] }) {
   return (
-    <section id="services" className="relative py-24 md:py-32">
-      <div className="container-x">
+    <section
+      id="services"
+      className="relative isolate overflow-hidden py-28 md:py-36"
+    >
+      <div aria-hidden className="section-wash section-wash-cyan" />
+      <span
+        aria-hidden
+        className="numeral-stencil absolute -top-8 right-6 md:-top-12 md:right-12"
+      >
+        05
+      </span>
+
+      <div className="container-x relative">
         <SectionHeading
           eyebrow="Services"
           title="How I can help."
           description="Three ways I work with teams and founders — pick the one that fits."
         />
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3 md:gap-8">
           {services.map((s, i) => {
             const Icon = ICONS[s.icon as keyof typeof ICONS] ?? Layers;
+            const scope = SCOPES[i] ?? "Custom scope";
             return (
               <motion.div
                 key={s.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                whileHover={{ y: -6 }}
-                className="group relative overflow-hidden rounded-2xl glass p-8 transition-all hover:border-border-strong hover:shadow-glow-violet"
+                viewport={{ once: true, margin: "-10% 0px" }}
+                transition={{ duration: DUR_SLOW, delay: i * 0.1, ease: EASE_OUT_EXPO }}
+                whileHover={{ y: -8, transition: { duration: 0.3, ease: EASE_OUT_QUART } }}
+                className="group card-surface relative overflow-hidden rounded-sm p-8 transition-[border-color,box-shadow] duration-base ease-out-quart hover:border-border-strong hover:shadow-elev-3"
               >
-                <div className="mb-6 grid size-12 place-items-center rounded-xl bg-accent-gradient shadow-glow-violet">
-                  <Icon className="size-5 text-white" />
+                {/* Icon — larger and squared with a strong-tier shadow. */}
+                <div className="mb-7 grid size-14 place-items-center rounded-md bg-accent-gradient shadow-glow-signal">
+                  <Icon className="size-6 text-white" />
                 </div>
-                <h3 className="font-display text-2xl font-semibold tracking-tight">{s.title}</h3>
-                <p className="mt-2 text-sm text-text-muted">{s.summary}</p>
-                <ul className="mt-6 space-y-2">
+                <p className="eyebrow mb-3">{scope}</p>
+                <h3 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
+                  {s.title}
+                </h3>
+                <p className="mt-3 text-sm text-text-muted body-pretty md:text-base">
+                  {s.summary}
+                </p>
+                <ul className="mt-7 space-y-2.5">
                   {s.deliverables.map((d) => (
-                    <li key={d} className="flex items-start gap-2 text-sm text-text-muted">
+                    <li key={d} className="flex items-start gap-2.5 text-sm text-text-muted">
                       <Check className="mt-0.5 size-4 text-gradient shrink-0" />
                       <span>{d}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="absolute -bottom-20 -right-20 size-40 rounded-full bg-accent-gradient opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-20" />
+
+                {/* Decorative corner halo — intensifies on hover. */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -bottom-24 -right-24 size-56 rounded-full opacity-0 blur-3xl transition-opacity duration-slow ease-out-quart group-hover:opacity-30"
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, rgba(107,143,168,0.50), rgba(184,149,111,0.22) 60%, transparent 80%)",
+                  }}
+                />
               </motion.div>
             );
           })}

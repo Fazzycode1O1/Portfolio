@@ -2,71 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─────────────────────────── LIGHT (default) ─────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────────
+   GRAPHITE & ATELIER — single dark-only palette.
+   Light mode intentionally removed for this rebrand. The cinematic /
+   editorial direction the brief requires is fundamentally a dark experience;
+   maintaining a parallel light palette would dilute the identity.
+   The .dark class is still emitted by next-themes (forcedTheme="dark") so
+   any historical .dark-prefixed selectors continue to apply.
+   ────────────────────────────────────────────────────────────────────── */
+
 :root {
-  color-scheme: light;
-  --bg: #FAFAF7;
-  --surface: #FFFFFF;
-  --surface-elevated: #FFFFFF;
-  --text: #0A0A0A;
-  --text-muted: #5A5A52;
-  --text-subtle: #8A8A82;
-  --border: rgba(10, 10, 10, 0.10);
-  --border-strong: rgba(10, 10, 10, 0.18);
-  --accent: #FF5B22;
-
-  /* Semantic */
-  --success: #15803D;
-  --warning: #B45309;
-  --danger:  #B91C1C;
-  --info:    #1D4ED8;
-
-  /* Tinted overlays — used in place of bg-black/[0.0X] for theme-aware fills */
-  --tint-1: rgba(10, 10, 10, 0.03);
-  --tint-2: rgba(10, 10, 10, 0.05);
-  --tint-3: rgba(10, 10, 10, 0.08);
-
-  /* Surface, hairline, paper-grain shadows */
-  --shadow-card:       0 1px 0 rgba(10,10,10,0.04), 0 4px 16px rgba(10,10,10,0.06);
-  --shadow-card-hover: 0 2px 0 rgba(10,10,10,0.04), 0 12px 28px rgba(10,10,10,0.08);
-  --shadow-inset:      inset 0 1px 0 rgba(255,255,255,0.6);
-
-  /* Glass surface (themed) */
-  --glass-bg: #FFFFFF;
-  --glass-border: rgba(10,10,10,0.10);
-  --glass-strong-border: rgba(10,10,10,0.18);
-}
-
-/* ─────────────────────────── DARK (.dark on <html>) ─────────────────── */
-.dark {
   color-scheme: dark;
-  --bg: #0E0D0B;
-  --surface: #161410;
-  --surface-elevated: #1B1916;
-  --text: #F5F2EC;
-  --text-muted: #A8A39A;
-  --text-subtle: #6E695F;
-  --border: rgba(245, 242, 236, 0.10);
-  --border-strong: rgba(245, 242, 236, 0.18);
-  --accent: #FF6B33;
 
-  --success: #4ADE80;
-  --warning: #FBBF24;
-  --danger:  #F87171;
-  --info:    #60A5FA;
+  /* ─────────────── Surface tiers (graphite stack) ─────────────── */
+  --bg: #050505;            /* page · deep graphite, darker than typical "dark" */
+  --surface: #0F0F10;       /* section bg */
+  --surface-elevated: #16161A;
+  --card: #16161A;          /* elevated cards */
+  --steel: #1F1F24;         /* raised mounts (terminal frame, modal) */
+  --hairline: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
 
-  --tint-1: rgba(245, 242, 236, 0.03);
-  --tint-2: rgba(245, 242, 236, 0.05);
-  --tint-3: rgba(245, 242, 236, 0.08);
+  /* ─────────────── Type (warm ink, not pure white) ─────────────── */
+  --text: #F2F2EE;          /* bone — has slight cream so it doesn't read clinical */
+  --text-muted: #A8A8A2;    /* ash */
+  --text-subtle: #6B6B68;   /* smoke */
 
-  --shadow-card:       0 1px 0 rgba(0,0,0,0.30), 0 4px 16px rgba(0,0,0,0.40);
-  --shadow-card-hover: 0 2px 0 rgba(0,0,0,0.30), 0 12px 28px rgba(0,0,0,0.50);
-  --shadow-inset:      inset 0 1px 0 rgba(255,255,255,0.04);
+  /* ─────────────── Accent (Atelier — used like spice, not paint) ───────────────
+     signal = muted steel blue, the primary accent. Atmospheric, drafting-blueprint.
+     moss   = desaturated emerald, reserved for "alive" indicators.
+     copper = warm pewter, reserved for ONE signature accent moment per page. */
+  --signal: #6B8FA8;
+  --signal-soft: #4F7186;
+  --signal-bright: #8FA9BD;
+  --moss: #5C8A6F;
+  --copper: #B8956F;
 
-  --glass-bg: #161410;
-  --glass-border: rgba(245,242,236,0.10);
-  --glass-strong-border: rgba(245,242,236,0.18);
+  /* Back-compat: existing utilities reference --accent. Map to signal. */
+  --accent: var(--signal);
+
+  /* RGB tuples for rgba() patterns — referenced by inline atmospheric layers. */
+  --signal-rgb: 107, 143, 168;
+  --moss-rgb: 92, 138, 111;
+  --copper-rgb: 184, 149, 111;
+
+  /* ─────────────── Semantic ─────────────── */
+  --success: var(--moss);   /* status dots, toasts */
+  --warning: #C6A663;       /* warm pewter-yellow, not yellow-green neon */
+  --danger:  #C76B6B;       /* dusty rose, not crimson */
+  --info:    var(--signal);
+
+  /* ─────────────── Tints (used like bg-black/[0.0X], theme-aware) ─────────────── */
+  --tint-1: rgba(255, 255, 255, 0.03);
+  --tint-2: rgba(255, 255, 255, 0.05);
+  --tint-3: rgba(255, 255, 255, 0.08);
+
+  /* ─────────────── Elevation (Apple-stacked: tight 1px + soft far) ─────────────── */
+  --elev-1: 0 1px 0 rgba(0,0,0,0.45), 0 4px 16px rgba(0,0,0,0.50);
+  --elev-2: 0 2px 0 rgba(0,0,0,0.55), 0 12px 32px rgba(0,0,0,0.60);
+  --elev-3: 0 4px 0 rgba(0,0,0,0.60), 0 28px 56px rgba(0,0,0,0.70);
+
+  /* ─────────────── Accent glows (the only color glow in the system) ─────────────── */
+  --glow-signal: 0 0 28px rgba(107, 143, 168, 0.30);
+  --glow-moss:   0 0 24px rgba(92, 138, 111, 0.28);
+  --glow-copper: 0 0 28px rgba(184, 149, 111, 0.30);
+  /* Back-compat aliases — keep until G2 sweeps callers. */
+  --glow-blue:   var(--glow-signal);
+  --glow-cyan:   var(--glow-moss);
+  --glow-purple: var(--glow-copper);
+
+  --shadow-card:       var(--elev-1);
+  --shadow-card-hover: var(--elev-2);
+  --shadow-inset:      inset 0 1px 0 rgba(255,255,255,0.05);
+
+  /* ─────────────── Glass — reserved for floating overlays only (navbar) ─────────────── */
+  --glass-bg: rgba(15, 15, 16, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-strong-border: rgba(255, 255, 255, 0.14);
+  --blur-glass: blur(20px) saturate(140%);
+
+  /* ─────────────── Focus ring ─────────────── */
+  --ring: rgba(107, 143, 168, 0.65);
+
+  /* ─────────────── Motion tokens ─────────────── */
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 520ms;
+
+  /* ─────────────── Section atmospheric washes ─────────────── */
+  /* Steel blue is the primary tonal palette. Moss / copper used to differentiate
+     section moods without re-introducing rainbow gradients. All low alpha. */
+  --wash-signal: rgba(107, 143, 168, 0.05);
+  --wash-moss:   rgba(92, 138, 111, 0.04);
+  --wash-copper: rgba(184, 149, 111, 0.04);
+  /* Aliases for back-compat with R3 section markup: */
+  --wash-cyan:   var(--wash-signal);
+  --wash-blue:   var(--wash-signal);
+  --wash-purple: var(--wash-copper);
 }
+
+/* keep .dark selectors working — they inherit the same variables */
+.dark { color-scheme: dark; }
 
 * { border-color: var(--border); }
 
@@ -80,16 +119,17 @@ html, body {
 html { scroll-behavior: smooth; }
 
 body {
+  /* ss01 = stylistic alt for tighter letterforms · cv11 = single-story 'a' */
   font-feature-settings: "ss01", "cv11";
   min-height: 100dvh;
 }
 
 :target { scroll-margin-top: 5rem; }
 
-::selection { background: rgba(255, 91, 34, 0.20); color: var(--text); }
+::selection { background: rgba(107, 143, 168, 0.25); color: var(--text); }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -109,47 +149,160 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
 
 @layer utilities {
-  /* Surface cards — react to theme via CSS vars. */
+  /* ─────────────── Surfaces ─────────────── */
+
+  /* Glass is reserved for floating overlays (navbar). Card-level usage moves
+     to .card-surface — and in G2 most cards will drop to bare hairline cells. */
   .glass {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--elev-1);
+    -webkit-backdrop-filter: var(--blur-glass);
+    backdrop-filter: var(--blur-glass);
   }
   .glass-strong {
     background: var(--glass-bg);
     border: 1px solid var(--glass-strong-border);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--elev-2);
+    -webkit-backdrop-filter: var(--blur-glass);
+    backdrop-filter: var(--blur-glass);
   }
+
+  .card-surface {
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: var(--elev-1);
+  }
+  .card-surface-strong {
+    background: var(--card);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--elev-2);
+  }
+
+  /* Hairline cell — G2's preferred "card" replacement. No fill, no rounded chrome.
+     Architectural index look. */
+  .hairline-cell {
+    background: transparent;
+    border: 1px solid var(--hairline);
+  }
+
+  /* ─────────────── Accent treatments ─────────────── */
+  /* `text-gradient` historically applied a rainbow sweep; in Atelier it's just
+     the signal color. The class name persists for back-compat; G2 will retire
+     most callers in favor of weight/italic shifts. */
   .text-gradient {
-    color: var(--accent);
+    color: var(--signal);
     background: none;
-    -webkit-text-fill-color: var(--accent);
+    -webkit-text-fill-color: var(--signal);
   }
+  .text-signal { color: var(--signal); }
+  .text-moss   { color: var(--moss);   }
+  .text-copper { color: var(--copper); }
+
   .border-gradient {
     position: relative;
-    border: 1px solid rgba(255, 91, 34, 0.30);
+    border: 1px solid rgba(107, 143, 168, 0.30);
   }
   .border-gradient::before { content: none; }
+
+  /* ─────────────── Atmospheric washes (muted vs R1) ───────────────
+     The new system uses one dominant signal tint per section with optional
+     secondary copper or moss in the opposite corner. Alphas tuned down ~40%
+     from R1 — atmospheric, never decorative. */
+  .section-wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .section-wash-cyan,
+  .section-wash-signal {
+    background:
+      radial-gradient(60% 50% at 75% 25%, var(--wash-signal), transparent 70%),
+      radial-gradient(40% 40% at 10% 80%, var(--wash-moss),   transparent 70%);
+  }
+  .section-wash-blue {
+    background:
+      radial-gradient(55% 50% at 25% 30%, var(--wash-signal), transparent 70%),
+      radial-gradient(45% 40% at 85% 75%, var(--wash-copper), transparent 70%);
+  }
+  .section-wash-purple,
+  .section-wash-copper {
+    background:
+      radial-gradient(60% 50% at 70% 70%, var(--wash-copper), transparent 70%),
+      radial-gradient(40% 40% at 15% 20%, var(--wash-signal), transparent 70%);
+  }
+
+  /* ─────────────── Noise + legacy aurora (kept, retinted) ─────────────── */
 
   .noise {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.025;
-    mix-blend-mode: multiply;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
   }
-  .dark .noise { mix-blend-mode: overlay; opacity: 0.04; }
 
   .aurora-bg {
     background:
-      radial-gradient(60% 50% at 20% 30%, rgba(255, 91, 34, 0.05), transparent 60%),
-      radial-gradient(50% 40% at 80% 25%, rgba(255, 107, 51, 0.04), transparent 60%);
+      radial-gradient(60% 50% at 20% 30%, rgba(107, 143, 168, 0.08), transparent 60%),
+      radial-gradient(50% 40% at 80% 25%, rgba(184, 149, 111, 0.05), transparent 60%);
   }
-  .dark .aurora-bg {
-    background:
-      radial-gradient(60% 50% at 20% 30%, rgba(255, 91, 34, 0.10), transparent 60%),
-      radial-gradient(50% 40% at 80% 25%, rgba(255, 107, 51, 0.08), transparent 60%);
-  }
+
   .container-x { @apply mx-auto w-full max-w-7xl px-6 md:px-8 lg:px-12; }
+
+  /* ─────────────── Typography scale (unchanged from R1) ─────────────── */
+
+  .display-3xl {
+    font-size: clamp(64px, 11vw, 160px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    font-weight: 600;
+  }
+  .display-2xl {
+    font-size: clamp(48px, 9vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+  }
+  .display-xl {
+    font-size: clamp(36px, 5.5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+  .numeral-xl {
+    font-size: clamp(72px, 12vw, 144px);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  /* Numeral watermark — retained for G1; G4 replaces with vertical spine labels.
+     Now tinted via the signal palette for atmospheric depth, not just white. */
+  .numeral-stencil {
+    font-size: clamp(96px, 16vw, 220px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.035);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .body-pretty {
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
 }

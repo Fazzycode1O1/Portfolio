@@ -5,7 +5,7 @@ export default function Loading() {
       <div className="relative flex flex-col items-center gap-4">
         <div className="relative size-12">
           <div className="absolute inset-0 animate-ping rounded-full bg-accent-gradient opacity-40" />
-          <div className="relative grid size-12 place-items-center rounded-xl bg-accent-gradient shadow-glow-violet">
+          <div className="relative grid size-12 place-items-center rounded-xl bg-accent-gradient shadow-elev-2">
             <span className="font-display text-lg font-bold text-white">A</span>
           </div>
         </div>

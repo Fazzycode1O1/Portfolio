@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { EASE_OUT_EXPO, DUR_BASE } from "@/lib/motion";
 
 /**
  * Wraps page content so route changes get a soft fade + lift.
@@ -17,10 +18,10 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -4 }}
-        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: DUR_BASE, ease: EASE_OUT_EXPO }}
       >
         {children}
       </motion.div>
