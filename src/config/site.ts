@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Muhammad Faizan Ali",
-  title: "Muhammad Faizan Ali — Software Engineer & AI Engineer",
+  title: "Muhammad Faizan Ali — Software Engineer UnderGraduate",
   description:
     "Premium portfolio of a full-stack software engineer and AI enthusiast — building modern web products, intelligent systems, and developer tools.",
   url: "https://muhammadfaizanali.dev",
