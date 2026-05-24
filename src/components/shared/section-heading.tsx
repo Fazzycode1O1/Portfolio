@@ -20,20 +20,20 @@ export function SectionHeading({ eyebrow, title, description, align = "left", cl
         <Reveal>
           <div
             className={cn(
-              "eyebrow mb-6 flex items-center gap-3",
+              "mb-7 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.32em] text-text-subtle",
               align === "center" && "justify-center"
             )}
           >
-            {/* Hairline accent draws in via scaleX after the eyebrow fades in. */}
+            {/* Signal dot — replaces the hairline-prefix eyebrow formula. */}
             <motion.span
               aria-hidden
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true, margin: "-10% 0px" }}
-              transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT_EXPO }}
-              className="h-px w-8 origin-left bg-accent-gradient"
+              transition={{ duration: 0.5, delay: 0.2, ease: EASE_OUT_EXPO }}
+              className="size-1 rounded-full bg-signal"
             />
-            <span className="text-gradient">{eyebrow}</span>
+            <span>{eyebrow}</span>
           </div>
         </Reveal>
       )}

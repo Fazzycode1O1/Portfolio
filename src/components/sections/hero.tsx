@@ -8,7 +8,6 @@ import {
   useTransform,
   useReducedMotion,
   type Variants,
-  type MotionValue,
 } from "framer-motion";
 import { ArrowRight, Download, Github, Linkedin, Twitter } from "lucide-react";
 import { siteConfig } from "@/config/site";
@@ -18,7 +17,6 @@ import { cn } from "@/lib/utils";
 
 const ROLES = ["Software Engineer", "AI Engineer", "Full-Stack Builder", "Open-Source Author"];
 
-/** Headline split into words. `gradient: true` marks the highlighted token. */
 const HEADLINE: { word: string; gradient?: boolean }[] = [
   { word: "Building" },
   { word: "the" },
@@ -79,155 +77,129 @@ const headlineWord: Variants = {
   visible: { y: 0, transition: { duration: 0.85, ease: EASE_OUT_EXPO } },
 };
 
-/* ────────────────────────── Ambient orb cluster ────────────────────────── */
+/* ──────────────────────────── Soft atmosphere ────────────────────────────
+   Replaces the prior 3-orb cluster. One large, very-low-alpha radial that
+   drifts mirrored over 18s. Reads as studio lighting, not animated blob. */
 
-interface OrbProps {
-  scrollYProgress: MotionValue<number>;
-  reduced: boolean;
-}
-
-function HeroOrbs({ scrollYProgress, reduced }: OrbProps) {
-  // Each orb drifts at its own rate so the cluster doesn't move as one slab.
-  const cyanY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const blueY = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-  const purpY = useTransform(scrollYProgress, [0, 1], ["0%", "42%"]);
-
-  const staticOrb = (cls: string, style: React.CSSProperties) => (
-    <div aria-hidden className={cls} style={style} />
-  );
-  const animatedOrb = (
-    y: MotionValue<string>,
-    cls: string,
-    style: React.CSSProperties
-  ) => <motion.div aria-hidden style={{ ...style, y }} className={cls} />;
-
-  // Atelier orb cluster — three tonal variants of the signal palette plus one
-  // copper accent in the corner. No rainbow, just atmospheric depth.
-  const cyanStyle = {
-    background:
-      "radial-gradient(closest-side, rgba(143,169,189,0.50), rgba(143,169,189,0.14) 50%, transparent 75%)",
-  };
-  const blueStyle = {
-    background:
-      "radial-gradient(closest-side, rgba(107,143,168,0.55), rgba(107,143,168,0.18) 50%, transparent 75%)",
-  };
-  const purpStyle = {
-    background:
-      "radial-gradient(closest-side, rgba(184,149,111,0.38), rgba(184,149,111,0.10) 50%, transparent 75%)",
-  };
-
+function SoftAtmosphere({ reduced }: { reduced: boolean }) {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      {reduced ? (
-        <>
-          {staticOrb(
-            "absolute left-[8%] top-[14%] h-[420px] w-[420px] rounded-full blur-[140px] opacity-50 dark:opacity-60",
-            cyanStyle
-          )}
-          {staticOrb(
-            "absolute right-[6%] top-[28%] h-[520px] w-[520px] rounded-full blur-[160px] opacity-55 dark:opacity-65",
-            blueStyle
-          )}
-          {staticOrb(
-            "absolute left-[38%] bottom-[6%] h-[460px] w-[460px] rounded-full blur-[150px] opacity-45 dark:opacity-55",
-            purpStyle
-          )}
-        </>
-      ) : (
-        <>
-          {animatedOrb(
-            cyanY,
-            "absolute left-[8%] top-[14%] h-[420px] w-[420px] rounded-full blur-[140px] opacity-50 dark:opacity-60",
-            cyanStyle
-          )}
-          {animatedOrb(
-            blueY,
-            "absolute right-[6%] top-[28%] h-[520px] w-[520px] rounded-full blur-[160px] opacity-55 dark:opacity-65",
-            blueStyle
-          )}
-          {animatedOrb(
-            purpY,
-            "absolute left-[38%] bottom-[6%] h-[460px] w-[460px] rounded-full blur-[150px] opacity-45 dark:opacity-55",
-            purpStyle
-          )}
-        </>
-      )}
+      <motion.div
+        initial={reduced ? undefined : { x: "-2%", y: "-2%" }}
+        animate={reduced ? undefined : { x: "2%", y: "2%" }}
+        transition={
+          reduced
+            ? undefined
+            : { duration: 18, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
+        }
+        className="absolute inset-[-10%]"
+        style={{
+          background:
+            "radial-gradient(50% 45% at 50% 38%, rgba(107,143,168,0.20), rgba(107,143,168,0.05) 45%, transparent 80%)",
+          filter: "blur(80px)",
+        }}
+      />
+      {/* A second very-soft warm pewter accent at the bottom-left — the one
+          copper moment per page. Static. */}
+      <div
+        className="absolute -bottom-[20%] -left-[10%] h-[60vh] w-[60vw]"
+        style={{
+          background:
+            "radial-gradient(closest-side, rgba(184,149,111,0.08), transparent 70%)",
+          filter: "blur(100px)",
+        }}
+      />
     </div>
   );
 }
 
-/* ─────────────────────────── Terminal artifact ─────────────────────────── */
+/* ─────────────────────────────── NOW card ────────────────────────────────
+   Editorial index card replacing the terminal artifact. Reads like a magazine
+   back-cover author note. Same `typed` role value drives the ROLE row, so all
+   existing content (the ROLES array) is preserved without the dev-cliché
+   terminal frame. */
 
-function TerminalArtifact({ typed }: { typed: string }) {
+function MetaRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="border-b border-border px-6 py-5 last:border-b-0">
+      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-subtle">
+        {label}
+      </p>
+      <div className="mt-2 font-mono text-sm leading-relaxed text-text">{children}</div>
+    </div>
+  );
+}
+
+function NowCard({ typed }: { typed: string }) {
   return (
     <motion.div
-      // Subtle perspective lean — reads as a tilted product mock without
-      // committing to a full Tilt component (which would conflict with the
-      // headline parallax).
       initial={{ rotate: 0 }}
-      animate={{ rotate: 0 }}
-      whileHover={{ rotate: -0.6 }}
+      whileHover={{ rotate: -0.4 }}
       transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-      className="card-surface relative overflow-hidden rounded-2xl shadow-elev-3"
+      className="card-surface relative overflow-hidden rounded-sm shadow-elev-3"
       style={{ transformPerspective: 1200 }}
-      aria-hidden
+      aria-label="What I'm doing now"
     >
-      {/* Window chrome */}
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
-        <div className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-signal-bright/80" />
-          <span className="size-2.5 rounded-full bg-signal/80" />
-          <span className="size-2.5 rounded-full bg-copper/80" />
-        </div>
-        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-text-subtle">
-          ~/portfolio/whoami
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
+        <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-text-subtle">
+          § NOW
         </span>
-        <span className="size-2.5 rounded-full bg-success shadow-glow-cyan motion-reduce:shadow-none" />
+        <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-moss">
+          <span
+            aria-hidden
+            className="size-[5px] rounded-full bg-moss animate-pulse-glow motion-reduce:animate-none"
+          />
+          Live
+        </span>
       </div>
 
       {/* Body */}
-      <div className="space-y-5 px-6 py-7 font-mono text-sm leading-relaxed">
-        <div>
-          <p className="text-text-subtle">
-            <span className="text-text-muted">$</span> whoami
-          </p>
-          <p className="mt-1 text-text">
-            <span className="text-[color:var(--accent)]">{"› "}</span>
-            {typed}
-            <span className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-blink bg-[color:var(--accent)] align-middle motion-reduce:animate-none" />
-          </p>
-        </div>
-
-        <div>
-          <p className="text-text-subtle">
-            <span className="text-text-muted">$</span> status
-          </p>
-          <p className="mt-1 text-text-muted">
-            <span className="text-[color:var(--accent)]">{"› "}</span>
-            available <span className="text-text-subtle">·</span> open to opportunities
-          </p>
-        </div>
-
-        <div>
-          <p className="text-text-subtle">
-            <span className="text-text-muted">$</span> stack
-          </p>
-          <p className="mt-1 text-text-muted">
-            <span className="text-[color:var(--accent)]">{"› "}</span>
-            Next <span className="text-text-subtle">·</span> TypeScript{" "}
-            <span className="text-text-subtle">·</span> MongoDB{" "}
-            <span className="text-text-subtle">·</span> AI
-          </p>
-        </div>
+      <div>
+        <MetaRow label="Role">
+          <span>{typed}</span>
+          <span
+            aria-hidden
+            className="ml-0.5 inline-block h-3.5 w-[2px] translate-y-0.5 animate-blink bg-signal align-middle motion-reduce:animate-none"
+          />
+        </MetaRow>
+        <MetaRow label="Location">
+          Remote <span className="text-text-subtle">·</span> Worldwide
+        </MetaRow>
+        <MetaRow label="Open to">
+          Full-time <span className="text-text-subtle">·</span> Freelance{" "}
+          <span className="text-text-subtle">·</span> AI consulting
+        </MetaRow>
+        <MetaRow label="Stack">
+          Next <span className="text-text-subtle">·</span> TypeScript{" "}
+          <span className="text-text-subtle">·</span> MongoDB{" "}
+          <span className="text-text-subtle">·</span> AI
+        </MetaRow>
       </div>
 
-      {/* Decorative inner halo, bottom-right — ties terminal to the orbs behind. */}
+      {/* Footer */}
+      <div className="flex items-center justify-between border-t border-border px-6 py-4">
+        <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-subtle">
+          § Index · 2026
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-subtle">
+          Updated · now
+        </span>
+      </div>
+
+      {/* Atmospheric inner halo — ties card to the section atmosphere. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full blur-3xl opacity-50"
+        className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full opacity-50 blur-3xl"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(107,143,168,0.32), rgba(184,149,111,0.16) 60%, transparent 80%)",
+            "radial-gradient(closest-side, rgba(107,143,168,0.30), rgba(184,149,111,0.16) 60%, transparent 80%)",
         }}
       />
     </motion.div>
@@ -246,8 +218,6 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Scroll-coupled exit choreography. Applied to the outer wrapper so the
-  // entire hero (text + terminal + orbs scale-out together) feels cinematic.
   const heroScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.92]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.4]);
   const heroY = useTransform(scrollYProgress, [0, 0.6], ["0%", "-8%"]);
@@ -258,7 +228,7 @@ export function Hero() {
       className="relative isolate overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32"
     >
       <div aria-hidden className="noise -z-10" />
-      <HeroOrbs scrollYProgress={scrollYProgress} reduced={reduced} />
+      <SoftAtmosphere reduced={reduced} />
 
       <motion.div
         style={reduced ? undefined : { scale: heroScale, opacity: heroOpacity, y: heroY }}
@@ -271,7 +241,6 @@ export function Hero() {
             animate={reduced ? undefined : "visible"}
             className="col-span-12 md:col-span-7"
           >
-            {/* Inline status notation — no pill chrome. Reads as editorial annotation. */}
             <motion.div
               variants={heroItem}
               className="inline-flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-text-muted"
@@ -291,13 +260,12 @@ export function Hero() {
               </span>
             </motion.div>
 
-            {/* Word-by-word headline reveal. Each word lives in an overflow-hidden
-                wrapper so the y-translate reads as a mask reveal, not a slide.
-                The accented word ("intelligent") gets italic + a hairline marker
-                stroke drawn underneath — replaces the old rainbow gradient. */}
+            {/* Headline. Base weight is light — only the accented "intelligent"
+                word reads heavier, italic, and gets a hand-drawn underline.
+                Editorial composition, not a SaaS hero. */}
             <motion.h1
               variants={headlineGroup}
-              className="display-3xl font-display mt-8 [text-wrap:balance]"
+              className="display-3xl font-display font-light mt-8 [text-wrap:balance]"
             >
               {HEADLINE.map((w, idx) => (
                 <span
@@ -327,7 +295,7 @@ export function Hero() {
               ))}
             </motion.h1>
 
-            {/* Mobile-only inline whoami line — the terminal artifact is hidden < md. */}
+            {/* Mobile-only inline whoami line — NOW card is hidden < md. */}
             <motion.div
               variants={heroItem}
               className="mt-8 flex items-center gap-2 font-mono text-sm text-text-muted md:hidden"
@@ -347,15 +315,19 @@ export function Hero() {
               between developer tools and machine intelligence.
             </motion.p>
 
-            {/* Bare text-link CTAs — chrome lives only in the trailing arrow.
-                Filled buttons are now reserved for the footer mega-CTA. */}
-            <motion.div variants={heroItem} className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <motion.div
+              variants={heroItem}
+              className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4"
+            >
               <Magnetic strength={8} radius={90}>
                 <Link
                   href="/projects"
                   className="group/cta inline-flex items-baseline gap-3 text-text transition-colors duration-fast ease-out-quart hover:text-signal-bright"
                 >
-                  <span aria-hidden className="font-mono text-[11px] uppercase tracking-[0.32em] text-text-subtle transition-colors duration-fast group-hover/cta:text-signal">
+                  <span
+                    aria-hidden
+                    className="font-mono text-[11px] uppercase tracking-[0.32em] text-text-subtle transition-colors duration-fast group-hover/cta:text-signal"
+                  >
                     01
                   </span>
                   <span className="text-base md:text-lg">View selected work</span>
@@ -367,14 +339,16 @@ export function Hero() {
                   href={siteConfig.links.resume}
                   className="group/cta inline-flex items-baseline gap-3 text-text-muted transition-colors duration-fast ease-out-quart hover:text-text"
                 >
-                  <span aria-hidden className="font-mono text-[11px] uppercase tracking-[0.32em] text-text-subtle transition-colors duration-fast group-hover/cta:text-signal">
+                  <span
+                    aria-hidden
+                    className="font-mono text-[11px] uppercase tracking-[0.32em] text-text-subtle transition-colors duration-fast group-hover/cta:text-signal"
+                  >
                     02
                   </span>
                   <span className="text-base md:text-lg">Download résumé</span>
                   <Download className="size-4 translate-y-0.5 transition-transform duration-base ease-out-quart group-hover/cta:-translate-y-0" />
                 </Link>
               </Magnetic>
-              {/* Social row — bare icons separated by hairlines, no card chrome. */}
               <div className="ml-auto flex items-center divide-x divide-border">
                 {[
                   { href: siteConfig.links.github, icon: Github, label: "GitHub" },
@@ -395,15 +369,14 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right column — terminal artifact (desktop only). Slides + scales
-              in slightly after the headline starts cascading. */}
+          {/* NOW card — desktop only. Slides + scales in after the headline starts. */}
           <motion.div
             initial={reduced ? undefined : { opacity: 0, x: 24, scale: 0.96 }}
             animate={reduced ? undefined : { opacity: 1, x: 0, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.95, ease: EASE_OUT_EXPO }}
             className="hidden md:col-span-5 md:block md:mt-2"
           >
-            <TerminalArtifact typed={typed} />
+            <NowCard typed={typed} />
           </motion.div>
         </div>
       </motion.div>

@@ -11,6 +11,7 @@ import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 import { Tilt } from "@/components/motion/tilt";
 import { EASE_OUT_EXPO } from "@/lib/motion";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 const FILTERS = ["All", "AI", "Full-Stack", "Frontend", "Data", "OSS"];
 
@@ -223,7 +224,7 @@ function FeaturedProjectPanel({ project }: { project: Project }) {
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
           <Link
             href={`/projects/${project.slug}`}
-            className="group/cta inline-flex items-center gap-2 font-mono text-sm font-medium text-text transition-colors duration-fast ease-out-quart hover:text-gradient"
+            className="group/cta inline-flex items-center gap-2 font-mono text-sm font-medium text-text transition-colors duration-fast ease-out-quart hover:text-signal-bright"
           >
             View case study
             <ArrowUpRight className="size-4 transition-transform duration-base ease-out-quart group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5" />
@@ -275,12 +276,7 @@ export function Projects({ projects }: { projects: Project[] }) {
   return (
     <section id="projects" className="relative isolate overflow-hidden py-28 md:py-36">
       <div aria-hidden className="section-wash section-wash-blue" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -top-8 right-6 md:-top-12 md:right-12"
-      >
-        03
-      </span>
+      <SpineLabel index="03" label="Selected Work" />
       <div className="container-x relative">
         <SectionHeading
           eyebrow="Selected work"

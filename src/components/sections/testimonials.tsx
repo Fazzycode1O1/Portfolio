@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import type { Testimonial } from "@/types";
 import { cn } from "@/lib/utils";
 import { EASE_OUT_EXPO } from "@/lib/motion";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 /**
  * Stacked-deck testimonials. Up to three cards visible: front in focus,
@@ -28,12 +29,7 @@ export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) 
       className="relative isolate overflow-hidden py-28 md:py-36"
     >
       <div aria-hidden className="section-wash section-wash-purple" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -top-8 left-6 md:-top-12 md:left-12"
-      >
-        07
-      </span>
+      <SpineLabel index="07" label="Testimonials" />
       <div className="container-x relative">
         <SectionHeading eyebrow="Kind words" title="What collaborators say." align="center" />
 
@@ -68,7 +64,7 @@ export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) 
                 >
                   <Quote
                     aria-hidden
-                    className="absolute -top-4 -left-4 size-14 text-gradient opacity-30"
+                    className="absolute -top-4 -left-4 size-14 text-signal opacity-30"
                   />
                   <div className="mb-4 flex gap-0.5">
                     {Array.from({ length: t.rating }).map((_, k) => (
@@ -79,7 +75,7 @@ export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) 
                     &ldquo;{t.quote}&rdquo;
                   </p>
                   <div className="mt-8 flex items-center gap-4">
-                    <div className="grid size-12 place-items-center rounded-full bg-accent-gradient shadow-glow-blue font-display text-lg font-semibold text-white">
+                    <div className="grid size-12 place-items-center rounded-full bg-accent-gradient shadow-glow-signal font-display text-lg font-semibold text-white">
                       {t.author[0]}
                     </div>
                     <div>

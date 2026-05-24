@@ -5,6 +5,7 @@ import { Github, Star, GitFork, Users, Activity } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { EASE_OUT_EXPO, DUR_SLOW } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 const MOCK = {
   followers: 482,
@@ -39,12 +40,7 @@ export function GitHubStats() {
       className="relative isolate overflow-hidden py-28 md:py-36"
     >
       <div aria-hidden className="section-wash section-wash-blue" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -top-8 right-6 md:-top-12 md:right-12"
-      >
-        06
-      </span>
+      <SpineLabel index="06" label="Open Source" />
 
       <div className="container-x relative">
         <SectionHeading
@@ -76,7 +72,7 @@ export function GitHubStats() {
                     <Icon className="size-3.5" />
                     {label}
                   </span>
-                  <span className="font-mono text-2xl font-medium tabular-nums text-gradient">
+                  <span className="font-mono text-2xl font-medium tabular-nums text-signal">
                     {value.toLocaleString()}
                   </span>
                 </li>

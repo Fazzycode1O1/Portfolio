@@ -94,10 +94,11 @@
 
   /* ─────────────── Section atmospheric washes ─────────────── */
   /* Steel blue is the primary tonal palette. Moss / copper used to differentiate
-     section moods without re-introducing rainbow gradients. All low alpha. */
-  --wash-signal: rgba(107, 143, 168, 0.05);
-  --wash-moss:   rgba(92, 138, 111, 0.04);
-  --wash-copper: rgba(184, 149, 111, 0.04);
+     section moods without re-introducing rainbow gradients. Alphas muted ~60%
+     from R3 — atmospheric, never decorative. */
+  --wash-signal: rgba(107, 143, 168, 0.02);
+  --wash-moss:   rgba(92, 138, 111, 0.018);
+  --wash-copper: rgba(184, 149, 111, 0.02);
   /* Aliases for back-compat with R3 section markup: */
   --wash-cyan:   var(--wash-signal);
   --wash-blue:   var(--wash-signal);

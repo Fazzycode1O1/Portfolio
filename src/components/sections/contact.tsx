@@ -10,6 +10,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -82,12 +83,7 @@ export function Contact() {
       className="relative isolate overflow-hidden py-32 md:py-44"
     >
       <div aria-hidden className="section-wash section-wash-blue" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -bottom-16 right-6 md:-bottom-24 md:right-12"
-      >
-        08
-      </span>
+      <SpineLabel index="08" label="Contact" />
 
       <div className="container-x relative">
         <SectionHeading
@@ -104,7 +100,7 @@ export function Contact() {
                 <p className="eyebrow">Direct</p>
                 <Link
                   href={siteConfig.links.email}
-                  className="mt-3 inline-flex items-center gap-3 text-text transition-colors duration-fast ease-out-quart hover:text-gradient"
+                  className="mt-3 inline-flex items-center gap-3 text-text transition-colors duration-fast ease-out-quart hover:text-signal-bright"
                 >
                   <Mail className="size-4" />
                   <span>{siteConfig.author.email}</span>
@@ -120,7 +116,7 @@ export function Contact() {
               <li className="border-t border-b border-border py-6">
                 <p className="eyebrow">Currently</p>
                 <p className="mt-3 text-text body-pretty">
-                  Open to <span className="text-gradient">full-time roles</span>, freelance, and AI
+                  Open to <span className="text-signal">full-time roles</span>, freelance, and AI
                   consulting engagements.
                 </p>
               </li>
@@ -138,7 +134,7 @@ export function Contact() {
                   exit={{ opacity: 0 }}
                   className="card-surface rounded-sm p-12 text-center"
                 >
-                  <div className="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-accent-gradient shadow-glow-blue">
+                  <div className="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-accent-gradient shadow-glow-signal">
                     <Check className="size-6 text-white" />
                   </div>
                   <h3 className="font-display text-2xl font-semibold">Message sent</h3>

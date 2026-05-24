@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import type { Skill, SkillCategory } from "@/types";
 import { Marquee } from "@/components/motion/marquee";
 import { EASE_OUT_EXPO } from "@/lib/motion";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 const CATEGORIES: { key: SkillCategory | "all"; label: string }[] = [
   { key: "all", label: "All" },
@@ -52,12 +53,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
       className="relative isolate overflow-hidden py-28 md:py-36"
     >
       <div aria-hidden className="section-wash section-wash-cyan" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -top-8 left-6 md:-top-12 md:left-12"
-      >
-        02
-      </span>
+      <SpineLabel index="02" label="Skills" />
 
       <div className="container-x relative">
         <SectionHeading
@@ -131,7 +127,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
                         filled
                           ? "bg-accent-gradient"
                           : "bg-black/10 dark:bg-white/10",
-                        isLastFilled && "shadow-glow-cyan"
+                        isLastFilled && "shadow-glow-moss"
                       )}
                     />
                   );

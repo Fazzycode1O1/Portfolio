@@ -5,6 +5,7 @@ import { Layers, Sparkles, Compass, Check } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import type { Service } from "@/types";
 import { EASE_OUT_EXPO, EASE_OUT_QUART, DUR_SLOW } from "@/lib/motion";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 const ICONS = { layers: Layers, sparkles: Sparkles, compass: Compass } as const;
 const SCOPES = ["4–8 wk engagement", "6–12 wk engagement", "≈ 2 wk per audit"] as const;
@@ -16,12 +17,7 @@ export function Services({ services }: { services: Service[] }) {
       className="relative isolate overflow-hidden py-28 md:py-36"
     >
       <div aria-hidden className="section-wash section-wash-cyan" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -top-8 right-6 md:-top-12 md:right-12"
-      >
-        05
-      </span>
+      <SpineLabel index="05" label="Services" />
 
       <div className="container-x relative">
         <SectionHeading
@@ -58,7 +54,7 @@ export function Services({ services }: { services: Service[] }) {
                 <ul className="mt-7 space-y-2.5">
                   {s.deliverables.map((d) => (
                     <li key={d} className="flex items-start gap-2.5 text-sm text-text-muted">
-                      <Check className="mt-0.5 size-4 text-gradient shrink-0" />
+                      <Check className="mt-0.5 size-4 text-signal shrink-0" />
                       <span>{d}</span>
                     </li>
                   ))}

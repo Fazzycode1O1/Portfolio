@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/motion/reveal";
 import { stats } from "@/lib/data";
 import { EASE_OUT_EXPO } from "@/lib/motion";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = React.useRef<HTMLSpanElement>(null);
@@ -42,14 +43,8 @@ export function About() {
       id="about"
       className="relative isolate overflow-hidden py-28 md:py-36"
     >
-      {/* Atmospheric blue wash + numeral watermark. */}
       <div aria-hidden className="section-wash section-wash-blue" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -top-8 right-6 md:-top-12 md:right-12"
-      >
-        01
-      </span>
+      <SpineLabel index="01" label="About" />
 
       <div className="container-x relative">
         <SectionHeading
@@ -97,7 +92,7 @@ export function About() {
                   }}
                   className="group flex items-baseline justify-between gap-6 border-b border-border py-6 first:pt-0 last:border-b-0"
                 >
-                  <span className="numeral-xl text-gradient">
+                  <span className="numeral-xl text-signal">
                     <Counter to={s.value} suffix={s.suffix} />
                   </span>
                   <span className="eyebrow shrink-0 text-right">{s.label}</span>

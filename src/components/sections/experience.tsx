@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import type { ExperienceItem } from "@/types";
 import { cn } from "@/lib/utils";
 import { EASE_OUT_EXPO, DUR_SLOW } from "@/lib/motion";
+import { SpineLabel } from "@/components/shared/spine-label";
 
 /** One timeline entry. Each gets its own scroll-coupled rail accent. */
 function TimelineRow({ item, index }: { item: ExperienceItem; index: number }) {
@@ -37,7 +38,7 @@ function TimelineRow({ item, index }: { item: ExperienceItem; index: number }) {
 
       {/* Period column */}
       <div className="col-span-12 md:col-span-3">
-        <p className="eyebrow text-gradient">
+        <p className="eyebrow text-signal">
           {item.start} — {item.end ?? "Now"}
         </p>
         <p className="mt-3 inline-flex items-center gap-2 font-mono text-xs text-text-subtle">
@@ -82,12 +83,7 @@ export function Experience({ experience }: { experience: ExperienceItem[] }) {
       className="relative isolate overflow-hidden py-28 md:py-36"
     >
       <div aria-hidden className="section-wash section-wash-purple" />
-      <span
-        aria-hidden
-        className="numeral-stencil absolute -bottom-16 left-6 md:-bottom-24 md:left-12"
-      >
-        04
-      </span>
+      <SpineLabel index="04" label="Experience" />
 
       <div className="container-x relative">
         <SectionHeading

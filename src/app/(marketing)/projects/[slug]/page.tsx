@@ -77,7 +77,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                         <Link
                           href={project.liveUrl}
                           target="_blank"
-                          className="group/link relative inline-flex items-center gap-2 text-text transition-colors duration-fast ease-out-quart hover:text-gradient"
+                          className="group/link relative inline-flex items-center gap-2 text-text transition-colors duration-fast ease-out-quart hover:text-signal-bright"
                         >
                           <ExternalLink className="size-4" />
                           <span>Live site</span>
@@ -93,7 +93,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                         <Link
                           href={project.repoUrl}
                           target="_blank"
-                          className="group/link relative inline-flex items-center gap-2 text-text transition-colors duration-fast ease-out-quart hover:text-gradient"
+                          className="group/link relative inline-flex items-center gap-2 text-text transition-colors duration-fast ease-out-quart hover:text-signal-bright"
                         >
                           <Github className="size-4" />
                           <span>Source code</span>

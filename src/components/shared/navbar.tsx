@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /**
@@ -106,13 +105,17 @@ export function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Button asChild size="sm" variant="primary">
-              <Link href={siteConfig.links.resume}>Resume</Link>
-            </Button>
+            <Link
+              href={siteConfig.links.resume}
+              className="group inline-flex items-center gap-2 rounded-sm border border-border-strong px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.28em] text-text-muted transition-colors duration-fast ease-out-quart hover:border-signal hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              <span aria-hidden className="size-1 rounded-full bg-signal" />
+              Résumé
+            </Link>
           </div>
 
           <button
-            className="md:hidden inline-flex size-10 items-center justify-center rounded-lg glass"
+            className="md:hidden inline-flex size-10 items-center justify-center rounded-sm border border-border-strong"
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
           >
@@ -170,9 +173,14 @@ export function Navbar() {
                   transition: { delay: 0.08 + siteConfig.nav.length * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] },
                 }}
               >
-                <Button asChild size="lg" className="mt-6" onClick={() => setOpen(false)}>
-                  <Link href={siteConfig.links.resume}>Download Resume</Link>
-                </Button>
+                <Link
+                  href={siteConfig.links.resume}
+                  onClick={() => setOpen(false)}
+                  className="group mt-8 inline-flex items-center gap-3 border border-border-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.32em] text-text transition-colors duration-fast ease-out-quart hover:border-signal hover:text-signal-bright"
+                >
+                  <span aria-hidden className="size-1.5 rounded-full bg-signal" />
+                  Download Résumé
+                </Link>
               </motion.div>
             </div>
           </motion.div>

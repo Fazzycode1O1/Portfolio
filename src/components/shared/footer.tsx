@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Github, Linkedin, Twitter, Mail, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Magnetic } from "@/components/motion/magnetic";
@@ -26,7 +27,7 @@ export function Footer() {
                 </span>
                 <span
                   aria-hidden
-                  className="relative inline-flex size-12 shrink-0 translate-y-1 items-center justify-center rounded-full bg-accent-gradient text-white shadow-glow-blue transition-transform duration-base ease-out-quart group-hover:translate-x-1 md:size-16"
+                  className="relative inline-flex size-12 shrink-0 translate-y-1 items-center justify-center rounded-full bg-accent-gradient text-white shadow-glow-signal transition-transform duration-base ease-out-quart group-hover:translate-x-1 md:size-16"
                 >
                   <ArrowUpRight className="size-5 md:size-7" />
                 </span>
@@ -132,9 +133,14 @@ export function Footer() {
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-2 font-mono text-xs text-text-subtle">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60 motion-reduce:animate-none" />
-              <span className="relative inline-flex size-2 rounded-full bg-success" />
+            <span className="relative flex size-[5px]">
+              <motion.span
+                aria-hidden
+                className="absolute inline-flex size-[5px] rounded-full bg-moss"
+                animate={{ scale: [1, 2.2, 1], opacity: [0.6, 0, 0.6] }}
+                transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut" }}
+              />
+              <span className="relative inline-flex size-[5px] rounded-full bg-moss" />
             </span>
             All systems operational
           </div>
