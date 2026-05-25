@@ -107,51 +107,24 @@ export const projects: Project[] = [
 
 export const experience: ExperienceItem[] = [
   {
-    company: "Independent",
-    role: "Founder & AI Engineer",
+    company: "FloodSense Pakistan — Final Year Project",
+    role: "Full-Stack/ML Junior Developer ",
     type: "work",
-    start: "2024",
-    end: null,
-    location: "Remote",
+    start: "2023",
+    end: "2026",
+    location: "hybrid",
     highlights: [
-      "Shipping AI-first developer tools used by 5k+ engineers.",
-      "Built RAG infrastructure handling 10M+ embeddings.",
-      "Open-sourced 4 libraries with combined 2k+ GitHub stars.",
-    ],
-  },
-  {
-    company: "Stealth Startup",
-    role: "Senior Full-Stack Engineer",
-    type: "work",
-    start: "2022",
-    end: "2024",
-    location: "Remote",
-    highlights: [
-      "Led the rewrite of a legacy monolith into a Next.js + Node services architecture.",
-      "Cut p95 latency from 1.2s to 180ms.",
-      "Mentored 3 engineers and owned the design-system migration.",
-    ],
-  },
-  {
-    company: "Agency",
-    role: "Full-Stack Engineer",
-    type: "work",
-    start: "2020",
-    end: "2022",
-    location: "Hybrid",
-    highlights: [
-      "Delivered 12+ client projects spanning fintech, e-commerce, and SaaS.",
-      "Built reusable component library adopted across 8 client codebases.",
+      "Building FloodSense Pakistan, an AI-powered flood risk assessment and early warning platform focused on geospatial analysis, machine learning pipelines, and data-driven insights for flood management in Pakistan.",
     ],
   },
   {
     company: "University",
-    role: "BSc Computer Science",
+    role: "BSe Software Engineering",
     type: "education",
-    start: "2016",
-    end: "2020",
-    location: "On-campus",
-    highlights: ["Graduated with First-Class Honours.", "Thesis on transformer architectures for code completion."],
+    start: "2023",
+    end: "2027",
+    location: "Mang, Haripur, Kpk, Pakistan ",
+    highlights: ["University Degree is in Progress"],
   },
 ];
 
@@ -161,18 +134,6 @@ export const services: Service[] = [
     icon: "layers",
     summary: "End-to-end product builds with Next.js, Node, and modern databases.",
     deliverables: ["Architecture & design system", "Production-ready codebase", "CI/CD + monitoring"],
-  },
-  {
-    title: "AI Engineering",
-    icon: "sparkles",
-    summary: "RAG pipelines, agentic workflows, and LLM-powered features.",
-    deliverables: ["Evaluation harness", "Vector store integration", "Cost & latency tuning"],
-  },
-  {
-    title: "Technical Consulting",
-    icon: "compass",
-    summary: "Architecture reviews, hiring help, and engineering strategy.",
-    deliverables: ["Audit report", "Roadmap proposal", "Pairing sessions"],
   },
 ];
 

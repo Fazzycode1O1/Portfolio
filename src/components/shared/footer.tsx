@@ -34,7 +34,7 @@ export function Footer() {
               </Link>
             </Magnetic>
             <p className="mt-6 max-w-xl text-text-muted body-pretty">
-              Have a product to ship, a role to fill, or a half-formed idea? Drop a line —
+              Open to opportunities, Drop a line —
               average response within 24 hours.
             </p>
           </div>

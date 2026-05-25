@@ -15,14 +15,14 @@ import { Magnetic } from "@/components/motion/magnetic";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-const ROLES = ["Software Engineer", "AI Engineer", "Full-Stack Builder", "Open-Source Author"];
+const ROLES = ["Software Engineer", "AI/ML Enthusiast", "Full-Stack Builder"];
 
 const HEADLINE: { word: string; gradient?: boolean }[] = [
-  { word: "Building" },
+  { word: " Exploring" },
   { word: "the" },
-  { word: "web’s" },
-  { word: "intelligent", gradient: true },
-  { word: "future." },
+  { word: "intersection" },
+  { word: " of Full Stack Development", gradient: true },
+  { word: "and AI/ML" },
 ];
 
 function useTyping(words: string[], speed = 80, pause = 1600) {
@@ -156,7 +156,7 @@ function NowCard({ typed }: { typed: string }) {
             aria-hidden
             className="size-[5px] rounded-full bg-moss animate-pulse-glow motion-reduce:animate-none"
           />
-          Live
+          open to Internship opportunities
         </span>
       </div>
 
@@ -170,23 +170,23 @@ function NowCard({ typed }: { typed: string }) {
           />
         </MetaRow>
         <MetaRow label="Location">
-          Remote <span className="text-text-subtle">·</span> Worldwide
+          Remote and Hybrid <span className="text-text-subtle">·</span> Pakistan
         </MetaRow>
         <MetaRow label="Open to">
-          Full-time <span className="text-text-subtle">·</span> Freelance{" "}
-          <span className="text-text-subtle">·</span> AI consulting
+          Full-time <span className="text-text-subtle">·</span> Full-Stack{" "}
+          <span className="text-text-subtle">·</span> AI/ML learning
         </MetaRow>
         <MetaRow label="Stack">
           Next <span className="text-text-subtle">·</span> TypeScript{" "}
           <span className="text-text-subtle">·</span> MongoDB{" "}
-          <span className="text-text-subtle">·</span> AI
+          <span className="text-text-subtle">·</span> AI/ML frameworks and tools learning
         </MetaRow>
       </div>
 
       {/* Footer */}
       <div className="flex items-center justify-between border-t border-border px-6 py-4">
         <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-subtle">
-          § Index · 2026
+          § · 2026
         </span>
         <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-subtle">
           Updated · now
@@ -310,9 +310,7 @@ export function Hero() {
               variants={heroItem}
               className="mt-8 text-base text-text-muted md:text-lg body-pretty"
             >
-              I design and ship modern web products and AI-powered systems — from realtime
-              analytics pipelines to agentic LLM workflows. Currently exploring the frontier
-              between developer tools and machine intelligence.
+             I build modern full-stack web applications while exploring AI/ML and intelligent systems. Currently focused on learning data-driven technologies, machine learning workflows, and developing FloodSense Pakistan — an AI-powered flood risk assessment and early warning platform..
             </motion.p>
 
             <motion.div
@@ -345,7 +343,7 @@ export function Hero() {
                   >
                     02
                   </span>
-                  <span className="text-base md:text-lg">Download résumé</span>
+                  <span className="text-base md:text-lg">Download resume</span>
                   <Download className="size-4 translate-y-0.5 transition-transform duration-base ease-out-quart group-hover/cta:-translate-y-0" />
                 </Link>
               </Magnetic>

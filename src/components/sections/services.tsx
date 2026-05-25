@@ -22,8 +22,8 @@ export function Services({ services }: { services: Service[] }) {
       <div className="container-x relative">
         <SectionHeading
           eyebrow="Services"
-          title="How I can help."
-          description="Three ways I work with teams and founders — pick the one that fits."
+          title="I have Hand on Full-Stack."
+          description="Learn More about my services and how I can help you to build your next project or idea ."
         />
 
         <div className="grid gap-6 md:grid-cols-3 md:gap-8">

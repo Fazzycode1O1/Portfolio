@@ -6,7 +6,7 @@ import { getSkills, getExperience } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Learn more about my background, skills, and what I bring to engineering teams.",
+  description: "Learn more about my background, skills, and Projects.",
 };
 
 export default async function AboutPage() {

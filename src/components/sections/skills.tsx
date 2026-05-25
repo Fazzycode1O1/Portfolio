@@ -32,15 +32,12 @@ const MARQUEE = [
   "Next.js",
   "TypeScript",
   "Python",
-  "OpenAI",
   "MongoDB",
   "Tailwind",
-  "Docker",
-  "AWS",
-  "PyTorch",
-  "Vercel",
-  "LangChain",
-  "Redis",
+  "React.js",
+  "JavaScript",
+  "Java",
+  "HTML",
 ];
 
 export function Skills({ skills }: { skills: Skill[] }) {
@@ -59,7 +56,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
         <SectionHeading
           eyebrow="Skills"
           title="The toolbox."
-          description="What I reach for, day to day, to ship products and ideas."
+          description="What I reach for, day to day, Learn Frameworks and Programing Languages."
         />
 
         {/* Filter — text links with a sliding underline (shared layoutId). */}

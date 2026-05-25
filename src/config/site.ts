@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Muhammad Faizan Ali",
   title: "Muhammad Faizan Ali — Software Engineer UnderGraduate",
   description:
-    "Premium portfolio of a full-stack software engineer and AI enthusiast — building modern web products, intelligent systems, and developer tools.",
+    "Portfolio of a full-stack junior software engineer undergraduate of 7th semester and AI/ML enthusiast. Showcasing projects, skills, and experience in web development ",
   url: "https://muhammad-faizan-ali-portfolio.vercel.app",
   ogImage: "/og.png",
   author: { name: "Muhammad Faizan Ali", email: "mfaizanali.alif@gmail.com", role: "Software Engineer Undergraduate" },

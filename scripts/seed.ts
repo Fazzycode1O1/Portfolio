@@ -126,7 +126,7 @@ async function seedSettings() {
     { key: "default" },
     {
       key: "default",
-      heroHeadline: "Building the web's intelligent future.",
+      heroHeadline: "Exploring the intersection of Full Stack Development and AI/ML.",
       heroSub: siteConfig.description,
       resumeUrl: siteConfig.links.resume.startsWith("http")
         ? siteConfig.links.resume

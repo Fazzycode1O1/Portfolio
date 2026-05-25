@@ -57,9 +57,9 @@ export default function OG() {
               flexWrap: "wrap",
             }}
           >
-            <span>Building the web&apos;s&nbsp;</span>
-            <span style={{ color: "#6B8FA8" }}>intelligent</span>
-            <span>&nbsp;future.</span>
+            <span>Exploring the intersection &apos;s&nbsp;</span>
+            <span style={{ color: "#6B8FA8" }}> of Full Stack Development</span>
+            <span>&nbsp; and AI/ML.</span>
           </div>
           <div style={{ fontSize: 28, color: "#A8A8A2", maxWidth: 900 }}>
             {siteConfig.author.role}
@@ -70,7 +70,7 @@ export default function OG() {
           <span>{siteConfig.url.replace(/^https?:\/\//, "")}</span>
           <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ width: 10, height: 10, borderRadius: 999, background: "#5C8A6F" }} />
-            Available for opportunities
+            Available for Internship opportunities
           </span>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { getProjects } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "A complete archive of projects — shipped products, AI tools, and open-source libraries.",
+  description: "A complete archive of projects —  open-source libraries.",
 };
 
 export default async function ProjectsPage() {
