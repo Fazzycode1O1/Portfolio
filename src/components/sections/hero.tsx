@@ -18,11 +18,13 @@ import { cn } from "@/lib/utils";
 const ROLES = ["Software Engineer", "AI/ML Enthusiast", "Full-Stack Builder"];
 
 const HEADLINE: { word: string; gradient?: boolean }[] = [
-  { word: " Exploring" },
+  { word: "Exploring" },
   { word: "the" },
   { word: "intersection" },
-  { word: " of Full Stack Development", gradient: true },
-  { word: "and AI/ML" },
+  { word: "of" },
+  { word: "Full Stack Development", gradient: true },
+  { word: "and" },
+  { word: "AI/ML." },
 ];
 
 function useTyping(words: string[], speed = 80, pause = 1600) {
@@ -265,7 +267,7 @@ export function Hero() {
                 Editorial composition, not a SaaS hero. */}
             <motion.h1
               variants={headlineGroup}
-              className="display-3xl font-display font-light mt-8 [text-wrap:balance]"
+              className="display-xl font-display font-light mt-6 [text-wrap:balance]"
             >
               {HEADLINE.map((w, idx) => (
                 <span
@@ -287,7 +289,7 @@ export function Hero() {
                         whileInView={{ scaleX: 1 }}
                         viewport={{ once: true, margin: "-30%" }}
                         transition={{ duration: 0.9, delay: 1.1, ease: EASE_OUT_EXPO }}
-                        className="absolute left-1 right-1 -bottom-1 h-[2px] origin-left bg-signal"
+                        className="absolute left-0.5 right-0.5 -bottom-0.5 h-px origin-left bg-signal"
                       />
                     )}
                   </motion.span>

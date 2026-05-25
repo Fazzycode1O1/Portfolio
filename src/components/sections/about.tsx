@@ -95,7 +95,7 @@ export function About() {
         <SectionHeading
           align="center"
           eyebrow="About"
-          title="Building at the intersection of full-stack engineering and applied AI."
+          title="Get to Know About Me ,Explore my Vision Below."
         />
 
         {/* Photo — focal point of the section. */}

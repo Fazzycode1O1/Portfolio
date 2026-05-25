@@ -61,7 +61,7 @@ export default function OG() {
             <span style={{ color: "#6B8FA8" }}> of Full Stack Development</span>
             <span>&nbsp; and AI/ML.</span>
           </div>
-          <div style={{ fontSize: 28, color: "#A8A8A2", maxWidth: 900 }}>
+          <div style={{ fontSize: 22, color: "#A8A8A2", maxWidth: 400 }}>
             {siteConfig.author.role}
           </div>
         </div>
