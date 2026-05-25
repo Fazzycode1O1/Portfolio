@@ -67,11 +67,30 @@ export function Contact() {
     setErrors({});
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 900));
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, company: "" }), // honeypot stays empty
+      });
+
+      if (res.status === 429) {
+        toast.error("Too many requests. Try again in a few minutes.");
+        return;
+      }
+      if (!res.ok) {
+        const data: unknown = await res.json().catch(() => null);
+        const msg =
+          data && typeof data === "object" && "error" in data && typeof data.error === "string"
+            ? data.error
+            : "Send failed. Try emailing me directly.";
+        toast.error(msg);
+        return;
+      }
+
       setSent(true);
       toast.success("Message sent — I'll get back to you shortly.");
     } catch {
-      toast.error("Something went wrong. Try emailing me directly.");
+      toast.error("Network error. Try emailing me directly.");
     } finally {
       setLoading(false);
     }
@@ -83,13 +102,13 @@ export function Contact() {
       className="relative isolate overflow-hidden py-32 md:py-44"
     >
       <div aria-hidden className="section-wash section-wash-blue" />
-      <SpineLabel index="08" label="Contact" />
+      <SpineLabel index="07" label="Contact" />
 
       <div className="container-x relative">
         <SectionHeading
           eyebrow="Contact · ~24h response"
-          title="Let's build something."
-          description="Have a project in mind, a role to fill, or just want to say hi? Drop a line below."
+          title="Open to Internship ."
+          description="Interested in Internship Opportunities and gain Experiences , Contact me below."
         />
 
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">

@@ -12,20 +12,17 @@ import { Project } from "@/models/Project";
 import { Skill } from "@/models/Skill";
 import { Experience } from "@/models/Experience";
 import { Service } from "@/models/Service";
-import { Testimonial } from "@/models/Testimonial";
 import {
   projects as fallbackProjects,
   skills as fallbackSkills,
   experience as fallbackExperience,
   services as fallbackServices,
-  testimonials as fallbackTestimonials,
 } from "@/lib/data";
 import type {
   Project as ProjectT,
   Skill as SkillT,
   ExperienceItem as ExperienceT,
   Service as ServiceT,
-  Testimonial as TestimonialT,
 } from "@/types";
 
 /** Wrap any DB call with a safe fallback so a stale connection never blanks the public site. */
@@ -133,19 +130,3 @@ export async function getServices(): Promise<ServiceT[]> {
   }, fallbackServices);
 }
 
-export async function getTestimonials(): Promise<TestimonialT[]> {
-  return tryDB(async () => {
-    const docs = await Testimonial.find({ approved: true })
-      .sort({ order: 1, createdAt: -1 })
-      .lean();
-    if (docs.length === 0) return fallbackTestimonials;
-    return docs.map((d) => ({
-      author: d.author,
-      role: d.role,
-      company: d.company,
-      avatar: d.avatarUrl,
-      quote: d.quote,
-      rating: d.rating,
-    }));
-  }, fallbackTestimonials);
-}

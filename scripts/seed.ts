@@ -12,7 +12,6 @@ import { Project } from "../src/models/Project";
 import { Skill } from "../src/models/Skill";
 import { Experience } from "../src/models/Experience";
 import { Service } from "../src/models/Service";
-import { Testimonial } from "../src/models/Testimonial";
 import { ContactMessage } from "../src/models/ContactMessage";
 import { SiteSettings } from "../src/models/SiteSettings";
 import {
@@ -20,7 +19,6 @@ import {
   skills as skillsData,
   experience as experienceData,
   services as servicesData,
-  testimonials as testimonialsData,
 } from "../src/lib/data";
 import { siteConfig } from "../src/config/site";
 
@@ -87,7 +85,6 @@ async function seedContent(authorId: mongoose.Types.ObjectId) {
     Skill.deleteMany({}),
     Experience.deleteMany({}),
     Service.deleteMany({}),
-    Testimonial.deleteMany({}),
     ContactMessage.deleteMany({}),
   ]);
 
@@ -110,18 +107,6 @@ async function seedContent(authorId: mongoose.Types.ObjectId) {
 
   const services = await Service.insertMany(servicesData.map((s, i) => ({ ...s, order: i })));
   console.log(`  services: ${services.length}`);
-
-  // Link each testimonial to a featured project for realistic relationships.
-  const featured = projects.filter((p) => p.featured);
-  const testimonials = await Testimonial.insertMany(
-    testimonialsData.map((t, i) => ({
-      ...t,
-      approved: true,
-      order: i,
-      project: featured[i % featured.length]?._id,
-    }))
-  );
-  console.log(`  testimonials: ${testimonials.length}`);
 
   // Sample inbox messages, spread across the last 5 days for analytics charts.
   const now = Date.now();

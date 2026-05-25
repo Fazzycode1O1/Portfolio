@@ -64,17 +64,6 @@ export const serviceSchema = z.object({
 });
 export const servicePatchSchema = serviceSchema.partial();
 
-export const testimonialSchema = z.object({
-  author: z.string().min(1).max(80),
-  role: z.string().min(1).max(120),
-  company: z.string().min(1).max(120),
-  avatarUrl: z.string().url().optional(),
-  quote: z.string().min(1).max(800),
-  rating: z.number().int().min(1).max(5).default(5),
-  approved: z.boolean().default(false),
-});
-export const testimonialPatchSchema = testimonialSchema.partial();
-
 export const settingsSchema = z.object({
   heroHeadline: z.string().max(200).optional(),
   heroSub: z.string().max(400).optional(),

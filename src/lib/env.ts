@@ -22,6 +22,13 @@ const ServerEnvSchema = z.object({
   GITHUB_USERNAME: z.string().optional(),
   BLOB_READ_WRITE_TOKEN: z.string().optional(),
 
+  // Resend transactional email — for contact form notifications.
+  // When both are present, contact submissions trigger an inbox email.
+  // Otherwise the API still saves to MongoDB but no notification fires.
+  RESEND_API_KEY: z.string().optional(),
+  CONTACT_TO_EMAIL: z.string().email().optional(),
+  CONTACT_FROM_EMAIL: z.string().email().optional(),
+
   // Comma-separated list of allowed origins for CSRF protection on writes.
   // Defaults to NEXT_PUBLIC_SITE_URL when unset.
   ALLOWED_ORIGINS: z.string().optional(),

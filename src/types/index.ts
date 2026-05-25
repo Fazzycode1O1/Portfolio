@@ -38,12 +38,3 @@ export interface Service {
   summary: string;
   deliverables: string[];
 }
-
-export interface Testimonial {
-  author: string;
-  role: string;
-  company: string;
-  avatar?: string;
-  quote: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-}

@@ -1,4 +1,4 @@
-import type { Project, Skill, ExperienceItem, Service, Testimonial } from "@/types";
+import type { Project, Skill, ExperienceItem, Service } from "@/types";
 
 export const skills: Skill[] = [
   { name: "TypeScript", category: "language", proficiency: 5 },
@@ -173,30 +173,6 @@ export const services: Service[] = [
     icon: "compass",
     summary: "Architecture reviews, hiring help, and engineering strategy.",
     deliverables: ["Audit report", "Roadmap proposal", "Pairing sessions"],
-  },
-];
-
-export const testimonials: Testimonial[] = [
-  {
-    author: "Sarah Chen",
-    role: "CTO",
-    company: "Northbeam",
-    quote: "Muhammad Faizan Ali rebuilt our data pipeline in two weeks. It now handles 20× the load on half the infra.",
-    rating: 5,
-  },
-  {
-    author: "Marcus Reyes",
-    role: "Head of Product",
-    company: "Lumen",
-    quote: "One of the rare engineers who treats UX and infra with equal seriousness. Ship-fast, ship-right.",
-    rating: 5,
-  },
-  {
-    author: "Priya Nair",
-    role: "Founder",
-    company: "Voxa",
-    quote: "Our AI features went from prototype to production thanks to Muhammad Faizan Ali's RAG architecture.",
-    rating: 5,
   },
 ];
 
